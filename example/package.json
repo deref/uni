@@ -1,14 +1,5 @@
 {
-  "name": "example",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "date-fns": "^2.17.0"
-  }
+  "description": "GENERATED FILE: DO NOT EDIT! This file is managed by unirepo.",
+  "private": true,
+  "dependencies": {}
 }

@@ -1,8 +1,7 @@
 package cmd
 
 import (
-	"fmt"
-
+	"github.com/brandonbloom/unirepo/internal"
 	"github.com/spf13/cobra"
 )
 
@@ -13,8 +12,8 @@ func init() {
 var depsCmd = &cobra.Command{
 	Use:   "deps",
 	Short: "Install dependencies",
-	Long:  `Generates a package.json file and runs your package manager.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("deps")
+	Long:  `Generates a root package.json file and runs your package manager.`,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return internal.Deps()
 	},
 }
