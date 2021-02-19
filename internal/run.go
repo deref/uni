@@ -3,7 +3,6 @@ package internal
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"os/exec"
 	"path"
@@ -12,13 +11,13 @@ import (
 )
 
 func Run(entrypoint string, args []string) error {
-	if err := os.MkdirAll(tmpDir, 0755); err != nil {
+	if err := EnsureTmp(); err != nil {
 		return err
 	}
 
-	dir, err := ioutil.TempDir(tmpDir, "run")
+	dir, err := TempDir("run")
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	defer os.RemoveAll(dir)
 

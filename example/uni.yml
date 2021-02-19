@@ -1,2 +1,5 @@
+packages:
+  - name: "@unirepo/example-utils"
+
 dependencies:
   date-fns: 2.17.0

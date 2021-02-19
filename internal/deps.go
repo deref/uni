@@ -1,32 +1,22 @@
 package internal
 
 import (
-	"encoding/json"
-	"io/ioutil"
 	"os"
 	"os/exec"
 )
 
-type PackageMetadata struct {
-	Name         string            `json:"name,omitempty"`
-	Description  string            `json:"description,omitempty"`
-	Private      bool              `json:"private,omitempty"`
-	Dependencies map[string]string `json:"dependencies"`
-}
-
 func Deps() error {
+	// XXX get from config file.
+	dependencies := map[string]string{
+		"date-fns": "2.17.0",
+	}
+
 	metadata := PackageMetadata{
 		Private:      true,
 		Description:  "GENERATED FILE: DO NOT EDIT! This file is managed by unirepo.",
-		Dependencies: make(map[string]string),
+		Dependencies: dependencies,
 	}
-	bs, err := json.Marshal(metadata)
-	if err != nil {
-		return err
-	}
-
-	metadataPath := "package.json" // XXX absolute path
-	if err := ioutil.WriteFile(metadataPath, bs, 0644); err != nil {
+	if err := WritePackageJSON(metadata, rootDir); err != nil {
 		return err
 	}
 

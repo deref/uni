@@ -1,5 +1,7 @@
 {
   "description": "GENERATED FILE: DO NOT EDIT! This file is managed by unirepo.",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "date-fns": "2.17.0"
+  }
 }
