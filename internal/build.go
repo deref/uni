@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"strings"
 
 	"github.com/evanw/esbuild/pkg/api"
 )
@@ -24,16 +25,51 @@ func Build() error {
 		return err
 	}
 
+	// XXX get from configs.
+	allDependencies := map[string]string{
+		"date-fns": "2.17.0",
+	}
+
+	dependencies := make(map[string]string)
+
+	depPrefix := "/Users/brandonbloom/Projects/unirepo/example/node_modules/"
+	isFileFromDeps := func(filepath string) bool {
+		return strings.HasPrefix(filepath, depPrefix)
+	}
+
+	var buildPlugin = api.Plugin{
+		Name: "unirepo",
+		Setup: func(build api.PluginBuild) {
+			build.OnResolve(
+				api.OnResolveOptions{
+					Filter: `.*`,
+				},
+				func(args api.OnResolveArgs) (api.OnResolveResult, error) {
+					if isFileFromDeps(args.Importer) {
+						return api.OnResolveResult{}, nil
+					}
+					moduleName := args.Path
+					if version, ok := allDependencies[moduleName]; ok {
+						dependencies[moduleName] = version
+					}
+					return api.OnResolveResult{}, nil
+				},
+			)
+		},
+	}
+
 	mainRelpath := "index.cjs.js"
 	result := api.Build(api.BuildOptions{
 		EntryPoints: []string{decl.Entrypoint},
 		Outfile:     path.Join(packageDir, mainRelpath),
+		Bundle:      true,
 		Platform:    api.PlatformNode,
 		Format:      api.FormatCommonJS,
 		Write:       true,
+		Plugins: []api.Plugin{
+			buildPlugin,
+		},
 	})
-
-	dependencies := map[string]string{} // XXX fill me.
 
 	pkgMetadata := PackageMetadata{
 		Name:         decl.Name,
