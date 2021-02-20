@@ -20,6 +20,9 @@ type RunOptions struct {
 	Args       []string
 }
 
+// TODO: Need to handle interrupts in order to have a higher chance
+// of cleaning up temporary files.
+
 func Run(repo *Repository, opts RunOptions) error {
 	if err := EnsureTmp(repo); err != nil {
 		return err

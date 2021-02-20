@@ -2,6 +2,9 @@ packages:
   "@unirepo/example-util":
     description: "An example package of utility functions."
     entrypoint: "./src/util.ts"
+  "@unirepo/server":
+    description: "Your typical HTTP server."
+    entrypoint: "./src/server.ts"
 
 dependencies:
   date-fns: 2.17.0
