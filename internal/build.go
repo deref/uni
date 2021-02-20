@@ -9,12 +9,14 @@ import (
 	"github.com/evanw/esbuild/pkg/api"
 )
 
-func Build(repo *Repository, packageName string) error {
-	pkg, ok := repo.Packages[packageName]
-	if !ok {
-		return fmt.Errorf("no such package: %q", packageName)
-	}
-	packageDir := path.Join(repo.OutDir, "node_modules", pkg.Name)
+type BuildOptions struct {
+	Package *Package
+	Version string
+}
+
+func Build(repo *Repository, opts BuildOptions) error {
+	pkg := opts.Package
+	packageDir := path.Join(repo.OutDir, "dist", pkg.Name)
 
 	if err := os.MkdirAll(packageDir, 0755); err != nil {
 		return err
@@ -26,7 +28,7 @@ func Build(repo *Repository, packageName string) error {
 
 	dependencies := make(map[string]string)
 
-	depPrefix := "/Users/brandonbloom/Projects/unirepo/example/node_modules/"
+	depPrefix := "/Users/brandonbloom/Projects/unirepo/example/node_modules/" // XXX
 	isFileFromDeps := func(filepath string) bool {
 		return strings.HasPrefix(filepath, depPrefix)
 	}
@@ -66,6 +68,7 @@ func Build(repo *Repository, packageName string) error {
 	pkgMetadata := PackageMetadata{
 		Name:         pkg.Name,
 		Description:  pkg.Description,
+		Version:      opts.Version,
 		Main:         mainRelpath,
 		Dependencies: dependencies,
 	}

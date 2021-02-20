@@ -7,8 +7,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var buildOpts internal.BuildOptions
+
 func init() {
 	rootCmd.AddCommand(buildCmd)
+	buildCmd.Flags().StringVar(&buildOpts.Version, "version", "", "version to put in package.json")
 }
 
 var buildCmd = &cobra.Command{
@@ -22,16 +25,22 @@ Given no arguments, builds all packages. Otherwise, builds only the specified pa
 		switch len(args) {
 		case 0:
 			// TODO: Parallelism.
-			for pkgName := range repo.Packages {
+			for pkgName, pkg := range repo.Packages {
+				buildOpts.Package = pkg
 				fmt.Println("building", pkgName)
-				if err := internal.Build(repo, pkgName); err != nil {
+				if err := internal.Build(repo, buildOpts); err != nil {
 					return err
 				}
 			}
 			return nil
 		case 1:
 			pkgName := args[0]
-			return internal.Build(repo, pkgName)
+			pkg, ok := repo.Packages[pkgName]
+			if !ok {
+				return fmt.Errorf("no such package: %q", pkgName)
+			}
+			buildOpts.Package = pkg
+			return internal.Build(repo, buildOpts)
 		default:
 			panic("unreachable")
 		}

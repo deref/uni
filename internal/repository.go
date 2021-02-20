@@ -12,6 +12,7 @@ type Repository struct {
 	ConfigPath   string
 	RootDir      string
 	OutDir       string
+	DistDir      string
 	TmpDir       string
 	Packages     map[string]*Package
 	Dependencies map[string]string
@@ -34,6 +35,7 @@ func LoadRepository(searchDir string) (*Repository, error) {
 	repo.ConfigPath = f.Name()
 	repo.RootDir = path.Dir(repo.ConfigPath)
 	repo.OutDir = path.Join(repo.RootDir, "out")
+	repo.DistDir = path.Join(repo.OutDir, "dist")
 	repo.TmpDir = path.Join(repo.OutDir, "tmp")
 
 	dec := yaml.NewDecoder(f)
