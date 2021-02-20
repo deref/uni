@@ -1,4 +1,4 @@
-module github.com/brandonbloom/unirepo
+module github.com/brandonbloom/uni
 
 go 1.15
 
