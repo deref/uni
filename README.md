@@ -39,7 +39,9 @@ Alpha! Don't use this yet.
 
 ## Installation
 
-TODO: Published binaries. Until then, install the package with `go get` or similar.
+```bash
+go get -u github.com/brandonbloom/uni
+```
 
 ## Configuration
 
