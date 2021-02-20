@@ -73,6 +73,7 @@ func Run(repo *Repository, opts RunOptions) error {
 	result := api.Build(api.BuildOptions{
 		EntryPoints: []string{opts.Entrypoint},
 		Outfile:     path.Join(dir, "bundle.js"),
+		Bundle:      true,
 		Platform:    api.PlatformNode,
 		Format:      api.FormatCommonJS,
 		Write:       true,
