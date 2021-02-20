@@ -5,6 +5,7 @@ import (
 	"os"
 	"path"
 	"strings"
+	"sync"
 
 	"github.com/evanw/esbuild/pkg/api"
 )
@@ -26,6 +27,7 @@ func Build(repo *Repository, opts BuildOptions) error {
 		return err
 	}
 
+	var mx sync.Mutex
 	dependencies := make(map[string]string)
 
 	depPrefix := path.Join(repo.RootDir, "node_modules")
@@ -44,7 +46,9 @@ func Build(repo *Repository, opts BuildOptions) error {
 				}
 				moduleName := args.Path
 				if version, ok := repo.Dependencies[moduleName]; ok {
+					mx.Lock()
 					dependencies[moduleName] = version
+					mx.Unlock()
 				}
 				return api.OnResolveResult{}, nil
 			})
