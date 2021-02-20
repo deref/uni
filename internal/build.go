@@ -28,7 +28,7 @@ func Build(repo *Repository, opts BuildOptions) error {
 
 	dependencies := make(map[string]string)
 
-	depPrefix := "/Users/brandonbloom/Projects/unirepo/example/node_modules/" // XXX
+	depPrefix := path.Join(repo.RootDir, "node_modules")
 	isFileFromDeps := func(filepath string) bool {
 		return strings.HasPrefix(filepath, depPrefix)
 	}
