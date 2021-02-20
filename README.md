@@ -29,7 +29,7 @@ Check out the [Demo Video](https://www.youtube.com/watch?v=RJfLA7EM-Uw)!
 
 Alpha! Don't use this yet.
 
-- TODO: .d.ts bundling. Use `tsc --watch` with `emitDeclarationOnly` for now.
+- TODO: `.d.ts` bundling. Use `tsc --watch` with `emitDeclarationOnly` for now.
 - TODO: common code split chunks -> common packages.
 
 ## Installation
