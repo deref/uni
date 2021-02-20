@@ -1,5 +1,7 @@
 packages:
-  - name: "@unirepo/example-utils"
+  "@unirepo/example-util":
+    description: "An example package of utility functions."
+    entrypoint: "./src/util.ts"
 
 dependencies:
   date-fns: 2.17.0

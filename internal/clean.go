@@ -2,6 +2,6 @@ package internal
 
 import "os"
 
-func Clean() error {
-	return os.RemoveAll(outDir)
+func Clean(repo *Repository) error {
+	return os.RemoveAll(repo.OutDir)
 }

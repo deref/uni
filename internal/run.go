@@ -10,12 +10,12 @@ import (
 	"github.com/evanw/esbuild/pkg/api"
 )
 
-func Run(entrypoint string, args []string) error {
-	if err := EnsureTmp(); err != nil {
+func Run(repo *Repository, entrypoint string, args []string) error {
+	if err := EnsureTmp(repo); err != nil {
 		return err
 	}
 
-	dir, err := TempDir("run")
+	dir, err := TempDir(repo, "run")
 	if err != nil {
 		return err
 	}
@@ -27,13 +27,10 @@ func Run(entrypoint string, args []string) error {
 		Platform:    api.PlatformNode,
 		Format:      api.FormatCommonJS,
 		Write:       true,
+		LogLevel:    api.LogLevelWarning,
 	})
 
 	if len(result.Errors) > 0 {
-		// XXX better reporting.
-		for _, err := range result.Errors {
-			fmt.Println(err)
-		}
 		return fmt.Errorf("build error")
 	}
 

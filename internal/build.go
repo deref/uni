@@ -9,25 +9,19 @@ import (
 	"github.com/evanw/esbuild/pkg/api"
 )
 
-func Build() error {
-	decl := PackageDeclaration{
-		Name:        "@unirepo/example-util",
-		Description: "An example package of utility functions.",
-		Entrypoint:  "src/util.ts",
+func Build(repo *Repository, packageName string) error {
+	pkg, ok := repo.Packages[packageName]
+	if !ok {
+		return fmt.Errorf("no such package: %q", packageName)
 	}
-	packageDir := path.Join(outDir, "node_modules", decl.Name)
+	packageDir := path.Join(repo.OutDir, "node_modules", pkg.Name)
 
 	if err := os.MkdirAll(packageDir, 0755); err != nil {
 		return err
 	}
 
-	if err := EnsureTmp(); err != nil {
+	if err := EnsureTmp(repo); err != nil {
 		return err
-	}
-
-	// XXX get from configs.
-	allDependencies := map[string]string{
-		"date-fns": "2.17.0",
 	}
 
 	dependencies := make(map[string]string)
@@ -49,7 +43,7 @@ func Build() error {
 						return api.OnResolveResult{}, nil
 					}
 					moduleName := args.Path
-					if version, ok := allDependencies[moduleName]; ok {
+					if version, ok := repo.Dependencies[moduleName]; ok {
 						dependencies[moduleName] = version
 					}
 					return api.OnResolveResult{}, nil
@@ -60,20 +54,21 @@ func Build() error {
 
 	mainRelpath := "index.cjs.js"
 	result := api.Build(api.BuildOptions{
-		EntryPoints: []string{decl.Entrypoint},
+		EntryPoints: []string{pkg.Entrypoint},
 		Outfile:     path.Join(packageDir, mainRelpath),
 		Bundle:      true,
 		Platform:    api.PlatformNode,
 		Format:      api.FormatCommonJS,
 		Write:       true,
+		LogLevel:    api.LogLevelWarning,
 		Plugins: []api.Plugin{
 			buildPlugin,
 		},
 	})
 
 	pkgMetadata := PackageMetadata{
-		Name:         decl.Name,
-		Description:  decl.Description,
+		Name:         pkg.Name,
+		Description:  pkg.Description,
 		Main:         mainRelpath,
 		Dependencies: dependencies,
 	}
@@ -82,10 +77,6 @@ func Build() error {
 	}
 
 	if len(result.Errors) > 0 {
-		// XXX better reporting.
-		for _, err := range result.Errors {
-			fmt.Println(err)
-		}
 		return fmt.Errorf("build error")
 	}
 

@@ -14,6 +14,8 @@ var buildCmd = &cobra.Command{
 	Short: "Builds packages targeting Node.",
 	Long:  `Builds packages targeting Node. TODO: Target browsers. TODO: Say more.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return internal.Build()
+		repo := mustLoadRepository()
+		pkgName := "@unirepo/example-util" // XXX get from args, have --all flag.
+		return internal.Build(repo, pkgName)
 	},
 }

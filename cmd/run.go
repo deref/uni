@@ -17,6 +17,7 @@ The script must export a function called "main", which will receive the
 given string args.`,
 	Args: cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return internal.Run(args[0], args[1:])
+		repo := mustLoadRepository()
+		return internal.Run(repo, args[0], args[1:])
 	},
 }

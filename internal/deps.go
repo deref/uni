@@ -5,18 +5,13 @@ import (
 	"os/exec"
 )
 
-func Deps() error {
-	// XXX get from config file.
-	dependencies := map[string]string{
-		"date-fns": "2.17.0",
-	}
-
+func Deps(repo *Repository) error {
 	metadata := PackageMetadata{
 		Private:      true,
 		Description:  "GENERATED FILE: DO NOT EDIT! This file is managed by unirepo.",
-		Dependencies: dependencies,
+		Dependencies: repo.Dependencies,
 	}
-	if err := WritePackageJSON(metadata, rootDir); err != nil {
+	if err := WritePackageJSON(metadata, repo.RootDir); err != nil {
 		return err
 	}
 

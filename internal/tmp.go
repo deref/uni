@@ -5,14 +5,14 @@ import (
 	"os"
 )
 
-func EnsureTmp() error {
-	return os.MkdirAll(tmpDir, 0755)
+func EnsureTmp(repo *Repository) error {
+	return os.MkdirAll(repo.TmpDir, 0755)
 }
 
-func TempDir(prefix string) (string, error) {
-	return ioutil.TempDir(tmpDir, prefix)
+func TempDir(repo *Repository, prefix string) (string, error) {
+	return ioutil.TempDir(repo.TmpDir, prefix)
 }
 
-func TempFile(prefix string) (*os.File, error) {
-	return ioutil.TempFile(tmpDir, "esbuild.meta")
+func TempFile(repo *Repository, prefix string) (*os.File, error) {
+	return ioutil.TempFile(repo.TmpDir, "esbuild.meta")
 }

@@ -14,6 +14,7 @@ var depsCmd = &cobra.Command{
 	Short: "Install dependencies",
 	Long:  `Generates a root package.json file and runs your package manager.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return internal.Deps()
+		repo := mustLoadRepository()
+		return internal.Deps(repo)
 	},
 }

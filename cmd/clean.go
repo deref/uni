@@ -14,6 +14,7 @@ var cleanCmd = &cobra.Command{
 	Short: "Removes build output.",
 	Long:  `Removes build output.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return internal.Clean()
+		repo := mustLoadRepository()
+		return internal.Clean(repo)
 	},
 }
