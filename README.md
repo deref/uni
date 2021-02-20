@@ -22,7 +22,7 @@ Additionally, Unirepo has a `run` subcommand that acts as a substitute for
 [`ts-node`][2]. The `run` subcomain also supports a `--watch` flag, and so acts
 as a substitute for [`node-dev`][3] (or [`ts-node-dev`][4]) as well.
 
-Want to see it in action? 
+Want to see it in action?
 Check out the [Demo Video](https://www.youtube.com/watch?v=RJfLA7EM-Uw)!
 
 ## Status
@@ -31,6 +31,10 @@ Alpha! Don't use this yet.
 
 - TODO: `.d.ts` bundling. Use `tsc --watch` with `emitDeclarationOnly` for now.
 - TODO: common code split chunks -> common packages.
+- TODO: disallow cyclic imports.
+- TODO: support absolute imports from `~`.
+- TODO: disallow `..` in imports.
+- TODO: provide something similar to Go's `internal` packages.
 
 ## Installation
 
