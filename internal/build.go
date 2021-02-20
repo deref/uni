@@ -31,24 +31,21 @@ func Build(repo *Repository, packageName string) error {
 		return strings.HasPrefix(filepath, depPrefix)
 	}
 
-	var buildPlugin = api.Plugin{
-		Name: "unirepo",
+	plugin := api.Plugin{
+		Name: "unirepo:deps",
 		Setup: func(build api.PluginBuild) {
-			build.OnResolve(
-				api.OnResolveOptions{
-					Filter: `.*`,
-				},
-				func(args api.OnResolveArgs) (api.OnResolveResult, error) {
-					if isFileFromDeps(args.Importer) {
-						return api.OnResolveResult{}, nil
-					}
-					moduleName := args.Path
-					if version, ok := repo.Dependencies[moduleName]; ok {
-						dependencies[moduleName] = version
-					}
+			build.OnResolve(api.OnResolveOptions{
+				Filter: ".*",
+			}, func(args api.OnResolveArgs) (api.OnResolveResult, error) {
+				if isFileFromDeps(args.Importer) {
 					return api.OnResolveResult{}, nil
-				},
-			)
+				}
+				moduleName := args.Path
+				if version, ok := repo.Dependencies[moduleName]; ok {
+					dependencies[moduleName] = version
+				}
+				return api.OnResolveResult{}, nil
+			})
 		},
 	}
 
@@ -62,7 +59,7 @@ func Build(repo *Repository, packageName string) error {
 		Write:       true,
 		LogLevel:    api.LogLevelWarning,
 		Plugins: []api.Plugin{
-			buildPlugin,
+			plugin,
 		},
 	})
 

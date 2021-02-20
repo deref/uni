@@ -5,8 +5,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var watch bool
+
 func init() {
 	rootCmd.AddCommand(runCmd)
+	runCmd.Flags().BoolVar(&watch, "watch", false, "re-runs command when source files change")
 }
 
 var runCmd = &cobra.Command{
@@ -19,6 +22,11 @@ given string args.`,
 	DisableFlagsInUseLine: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		repo := mustLoadRepository()
-		return internal.Run(repo, args[0], args[1:])
+		opts := internal.RunOptions{
+			Watch:      watch,
+			Entrypoint: args[0],
+			Args:       args[1:],
+		}
+		return internal.Run(repo, opts)
 	},
 }
