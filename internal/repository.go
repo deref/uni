@@ -1,7 +1,7 @@
 package internal
 
 import (
-	"errors"
+	"fmt"
 	"os"
 	"path"
 
@@ -56,10 +56,11 @@ func LoadRepository(searchDir string) (*Repository, error) {
 	return &repo, nil
 }
 
-var ErrNoConfig = errors.New("cannot find config file")
+const configName = "uni.yml"
+
+var ErrNoConfig = fmt.Errorf("cannot find %s config file", configName)
 
 func openConfigFile(searchDir string) (*os.File, error) {
-	const configName = "uni.yml"
 	for {
 		configPath := path.Join(searchDir, configName)
 		f, err := os.Open(configPath)
