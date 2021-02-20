@@ -20,6 +20,13 @@ Additionally, Unirepo has a `run` subcommand that acts as a substitute for both
 [`ts-node`][2]. The `run` subcomain also supports a `--watch` flag, and so acts
 as a substitute for [`node-dev`][3] (or [`ts-node-dev`][4]) as well.
 
+## Status
+
+Alpha! Don't use this yet.
+
+- TODO: .d.ts bundling.
+- TODO: common code split chunks -> common packages.
+
 ## Installation
 
 TODO: Published binaries. Until then, install the package with `go get` or similar.
@@ -28,12 +35,26 @@ TODO: Published binaries. Until then, install the package with `go get` or simil
 
 See the [example](./example).
 
-## Status
+## Usage
 
-Alpha! Don't use this yet.
+### Setup
 
-- TODO: .d.ts bundling.
-- TODO: common code split chunks -> common packages.
+1. Create a `uni.yml` file with some package entrypoints.
+2. Manually add dependencies to your config file.
+3. Run `uni deps`.
+
+### Development
+
+- Use `uni run src/program.ts` to execute programs. They must export a `main` function.
+- Use `uni build some-package` to pre-compile into `out/dist`.
+
+### Publishing
+
+Here's the steps to do in your CI flow:
+
+1. `uni build --version $VERSION` to create packages with version numbers.
+2. `uni pack` to create packed `.tgz` files.
+3. `uni publish` to automate `npm publish ./path/to/package.tgz`.
 
 [1]: https://esbuild.github.io/
 [2]: https://github.com/TypeStrong/ts-node
