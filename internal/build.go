@@ -70,6 +70,7 @@ func Build(repo *Repository, opts BuildOptions) error {
 		LogLevel:    api.LogLevelWarning,
 		Sourcemap:   api.SourceMapLinked,
 		Plugins:     plugins,
+		External:    getExternals(repo),
 	})
 
 	pkgMetadata := PackageMetadata{

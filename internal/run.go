@@ -81,6 +81,7 @@ func Run(repo *Repository, opts RunOptions) error {
 		Sourcemap:   api.SourceMapLinked,
 		Incremental: opts.Watch,
 		Plugins:     plugins,
+		External:    getExternals(repo),
 	})
 
 	g := new(errgroup.Group)
