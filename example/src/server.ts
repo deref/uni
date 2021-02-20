@@ -1,4 +1,4 @@
-import http from "http";
+import * as http from "http";
 
 export const main = async (...args: string[]) => {
   const port = 3001;
