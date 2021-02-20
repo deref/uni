@@ -1,5 +1,6 @@
 packages:
   "@unirepo/example-util":
+    public: true
     description: "An example package of utility functions."
     entrypoint: "./src/util.ts"
   "@unirepo/server":

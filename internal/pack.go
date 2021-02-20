@@ -55,7 +55,12 @@ func Pack(repo *Repository, pkg *Package) error {
 		if err != nil {
 			return err
 		}
-		header.Name = filepath.ToSlash(file)
+
+		relpath, err := filepath.Rel(distPath, file)
+		if err != nil {
+			return err
+		}
+		header.Name = filepath.ToSlash(path.Join("package", relpath))
 
 		if err := tw.WriteHeader(header); err != nil {
 			return err
@@ -85,6 +90,11 @@ func Pack(repo *Repository, pkg *Package) error {
 
 	resultName := strippedName + ".tgz"
 	resultPath := path.Join(packedDir, resultName)
+	if err := os.Remove(resultPath); err != nil {
+		if !os.IsNotExist(err) {
+			return err
+		}
+	}
 	if err := os.Symlink(packedPath, resultPath); err != nil {
 		return err
 	}

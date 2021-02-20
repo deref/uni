@@ -24,6 +24,7 @@ type Config struct {
 }
 
 type PackageConfig struct {
+	Public      bool
 	Description string
 	Entrypoint  string
 	// TODO: License, author, etc.

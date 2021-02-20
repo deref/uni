@@ -67,6 +67,7 @@ func Build(repo *Repository, opts BuildOptions) error {
 
 	pkgMetadata := PackageMetadata{
 		Name:         pkg.Name,
+		Private:      !pkg.Public,
 		Description:  pkg.Description,
 		Version:      opts.Version,
 		Main:         mainRelpath,

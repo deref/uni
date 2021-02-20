@@ -20,6 +20,7 @@ type Repository struct {
 
 type Package struct {
 	Name        string
+	Public      bool
 	Description string
 	Entrypoint  string
 }
@@ -48,6 +49,7 @@ func LoadRepository(searchDir string) (*Repository, error) {
 	for packageName, packageConfig := range cfg.Packages {
 		repo.Packages[packageName] = &Package{
 			Name:        packageName,
+			Public:      packageConfig.Public,
 			Description: packageConfig.Description,
 			Entrypoint:  packageConfig.Entrypoint,
 		}

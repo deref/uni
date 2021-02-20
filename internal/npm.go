@@ -10,7 +10,7 @@ type PackageMetadata struct {
 	Name         string            `json:"name,omitempty"`
 	Description  string            `json:"description,omitempty"`
 	Version      string            `json:"version,omitempty"`
-	Private      bool              `json:"private,omitempty"`
+	Private      bool              `json:"private"`
 	Main         string            `json:"main,omitempty"`
 	Dependencies map[string]string `json:"dependencies"`
 }
