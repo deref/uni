@@ -60,6 +60,7 @@ func Build(repo *Repository, opts BuildOptions) error {
 		Format:      api.FormatCommonJS,
 		Write:       true,
 		LogLevel:    api.LogLevelWarning,
+		Sourcemap:   api.SourceMapLinked,
 		Plugins: []api.Plugin{
 			plugin,
 		},

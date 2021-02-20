@@ -35,6 +35,7 @@ func Run(repo *Repository, opts RunOptions) error {
 	defer os.RemoveAll(dir)
 
 	script := `
+		require('source-map-support').install();
 		const { main } = require('./bundle.js');
 		const args = process.argv.slice(2);
 		void main(...args);
@@ -74,6 +75,7 @@ func Run(repo *Repository, opts RunOptions) error {
 		Format:      api.FormatCommonJS,
 		Write:       true,
 		LogLevel:    api.LogLevelWarning,
+		Sourcemap:   api.SourceMapLinked,
 		Incremental: opts.Watch,
 		Plugins:     plugins,
 	})

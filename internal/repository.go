@@ -55,7 +55,14 @@ func LoadRepository(searchDir string) (*Repository, error) {
 		}
 	}
 
-	repo.Dependencies = cfg.Dependencies
+	repo.Dependencies = make(map[string]string)
+	for dependencyName, dependencyVersion := range cfg.Dependencies {
+		repo.Dependencies[dependencyName] = dependencyVersion
+	}
+	// Add automatic dependencies.
+	if _, ok := repo.Dependencies["source-map-support"]; !ok {
+		repo.Dependencies["source-map-support"] = "0.5.19"
+	}
 
 	return &repo, nil
 }

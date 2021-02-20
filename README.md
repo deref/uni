@@ -20,7 +20,8 @@ using [esbuild][1].
 
 Additionally, Unirepo has a `run` subcommand that acts as a substitute for
 [`ts-node`][2]. The `run` subcomain also supports a `--watch` flag, and so acts
-as a substitute for [`node-dev`][3] (or [`ts-node-dev`][4]) as well.
+as a substitute for [`node-dev`][3] (or [`ts-node-dev`][4]) as well. Sourcemaps
+are always enabled.
 
 Want to see it in action?
 Check out the [Demo Video](https://www.youtube.com/watch?v=RJfLA7EM-Uw)!
