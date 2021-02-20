@@ -36,6 +36,7 @@ Alpha! Don't use this yet.
 - TODO: support absolute imports from `~`.
 - TODO: disallow `..` in imports.
 - TODO: provide something similar to Go's `internal` packages.
+- TODO: prettier.
 
 ## Installation
 
