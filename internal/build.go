@@ -33,7 +33,7 @@ func Build(repo *Repository, opts BuildOptions) error {
 		return strings.HasPrefix(filepath, depPrefix)
 	}
 
-	plugin := api.Plugin{
+	depsPlugin := api.Plugin{
 		Name: "unirepo:deps",
 		Setup: func(build api.PluginBuild) {
 			build.OnResolve(api.OnResolveOptions{
@@ -51,6 +51,10 @@ func Build(repo *Repository, opts BuildOptions) error {
 		},
 	}
 
+	plugins := []api.Plugin{
+		depsPlugin,
+	}
+
 	mainRelpath := "index.cjs.js"
 	result := api.Build(api.BuildOptions{
 		EntryPoints: []string{pkg.Entrypoint},
@@ -61,9 +65,7 @@ func Build(repo *Repository, opts BuildOptions) error {
 		Write:       true,
 		LogLevel:    api.LogLevelWarning,
 		Sourcemap:   api.SourceMapLinked,
-		Plugins: []api.Plugin{
-			plugin,
-		},
+		Plugins:     plugins,
 	})
 
 	pkgMetadata := PackageMetadata{

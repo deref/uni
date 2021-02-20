@@ -46,6 +46,7 @@ func Run(repo *Repository, opts RunOptions) error {
 	}
 
 	var plugins []api.Plugin
+
 	var watcher *fsnotify.Watcher
 	if opts.Watch {
 		var err error
@@ -55,7 +56,7 @@ func Run(repo *Repository, opts RunOptions) error {
 		}
 		defer watcher.Close()
 
-		plugins = append(plugins, api.Plugin{
+		watchPlugin := api.Plugin{
 			Name: "unirepo:watch",
 			Setup: func(build api.PluginBuild) {
 				build.OnLoad(api.OnLoadOptions{
@@ -65,7 +66,8 @@ func Run(repo *Repository, opts RunOptions) error {
 					return api.OnLoadResult{}, err
 				})
 			},
-		})
+		}
+		plugins = append(plugins, watchPlugin)
 	}
 
 	result := api.Build(api.BuildOptions{
