@@ -19,6 +19,8 @@ func LoadConfig(filepath string) (*Config, error) {
 }
 
 type Config struct {
+	// TODO: Do not load these in as maps, since duplicate keys are
+	// not decectable this way!
 	Packages     map[string]PackageConfig
 	Dependencies map[string]string
 }

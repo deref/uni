@@ -30,13 +30,15 @@ Check out the [Demo Video](https://www.youtube.com/watch?v=RJfLA7EM-Uw)!
 
 Alpha! Don't use this yet.
 
+- TODO: Generate `tsconfig.json` file.
 - TODO: `.d.ts` bundling. Use `tsc --watch` with `emitDeclarationOnly` for now.
 - TODO: common code split chunks -> common packages.
 - TODO: disallow cyclic imports.
-- TODO: support absolute imports from `~`.
+- TODO: automatically support absolute imports from `~`.
 - TODO: disallow `..` in imports.
 - TODO: provide something similar to Go's `internal` packages.
-- TODO: prettier.
+- TODO: generate prettier config.
+- TODO: some way to determine which dependencies should be peer dependencies in generated packages.
 
 ## Installation
 
@@ -44,11 +46,9 @@ Alpha! Don't use this yet.
 go get -u github.com/brandonbloom/uni
 ```
 
-## Configuration
-
-See the [example](./example).
-
 ## Usage
+
+- [Configuration](./doc/config.md)
 
 ### Setup
 
