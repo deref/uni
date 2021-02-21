@@ -23,6 +23,10 @@ Additionally, Unirepo has a `run` subcommand that acts as a substitute for
 as a substitute for [`node-dev`][3] (or [`ts-node-dev`][4]) as well. Sourcemaps
 are always enabled.
 
+As mentioned, Unirepo is extremely opinionated. Those opinions will evolve in
+to documentation, including a a growing list of
+[anti-features](./doc/anti-features.md).
+
 Want to see it in action?
 Check out the [Demo Video](https://www.youtube.com/watch?v=RJfLA7EM-Uw)!
 
