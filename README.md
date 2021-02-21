@@ -11,9 +11,9 @@ Unirepo is different because sub-package configuration is managed centrally and
 uniformly. Package boundaries are managed automatically via bundling and code
 splitting.
 
-You will have one and only one `package.json` file. Same for `tsconfig.json`.
-Your `package.json` file will be generated from a source configuration file
-that - believe it or not - allows code comments.
+You will have one and only one list of dependencies. Your `package.json` files
+will be generated from that source configuration. Same for `tsconfig.json`.
+The source configuration file that - believe it or not - allows code comments.
 
 Unirepo is _fast_ because it is ships as a native binary and builds your code
 using [esbuild][1].
