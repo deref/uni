@@ -10,6 +10,9 @@ func Deps(repo *Repository) error {
 		Private:      true,
 		Description:  "GENERATED FILE: DO NOT EDIT! This file is managed by unirepo.",
 		Dependencies: repo.Dependencies,
+		Scripts: map[string]string{
+			"postinstall": "patch-package",
+		},
 	}
 	if err := WritePackageJSON(metadata, repo.RootDir); err != nil {
 		return err

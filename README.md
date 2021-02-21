@@ -69,7 +69,12 @@ Here's the steps to do in your CI flow:
 2. `uni pack` to create packed `.tgz` files.
 3. `uni publish` to automate `npm publish ./path/to/package.tgz`.
 
+## Other Features
+
+- [patch-package][5] is builtin.
+
 [1]: https://esbuild.github.io/
 [2]: https://github.com/TypeStrong/ts-node
 [3]: https://github.com/fgnass/node-dev
 [4]: https://github.com/wclr/ts-node-dev
+[5]: https://github.com/ds300/patch-package
