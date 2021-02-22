@@ -1,0 +1,12 @@
+{
+  "name": "@unirepo/placeholder",
+  "version": "1.0.0",
+  "private": false,
+  "description": "An empty package to reserve this package name.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brandonbloom/uni.git"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/brandonbloom/uni#readme"
+}

@@ -11,7 +11,7 @@ type InstallDependenciesOptions struct {
 
 func InstallDependencies(repo *Repository, opts InstallDependenciesOptions) error {
 	metadata := PackageMetadata{
-		Name:         "@unirepo/generated",
+		Name:         "@unirepo/placeholder",
 		Private:      true,
 		Description:  "GENERATED FILE: DO NOT EDIT! This file is managed by unirepo.",
 		Dependencies: repo.Dependencies,
