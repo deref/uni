@@ -102,6 +102,7 @@ func Run(repo *Repository, opts RunOptions) error {
 			}
 		}
 
+		failed := false
 		for {
 			nodeArgs := append([]string{scriptPath}, opts.Args...)
 			node := exec.Command("node", nodeArgs...)
@@ -109,20 +110,22 @@ func Run(repo *Repository, opts RunOptions) error {
 			node.Stdout = os.Stdout
 			node.Stderr = os.Stderr
 			done := make(chan error, 1)
-			if err := node.Start(); err != nil {
-				if !opts.Watch {
-					return err
+			if !failed {
+				if err := node.Start(); err != nil {
+					if !opts.Watch {
+						return err
+					}
+					fmt.Fprintf(os.Stderr, "could not start: %v\n", err)
+				} else {
+					go func() {
+						done <- node.Wait()
+					}()
 				}
-				fmt.Fprintf(os.Stderr, "could not start: %v", err)
-			} else {
-				go func() {
-					done <- node.Wait()
-				}()
 			}
 			select {
 			case <-abort:
 				if err := node.Process.Kill(); err != nil {
-					fmt.Fprintf(os.Stderr, "could not kill: %v", err)
+					fmt.Fprintf(os.Stderr, "could not kill: %v\n", err)
 				}
 				return nil
 			case <-restart:
@@ -137,14 +140,18 @@ func Run(repo *Repository, opts RunOptions) error {
 					}
 				}
 				if err := node.Process.Kill(); err != nil {
-					fmt.Fprintf(os.Stderr, "could not kill: %v", err)
+					fmt.Fprintf(os.Stderr, "could not kill: %v\n", err)
 				}
 				result = result.Rebuild()
+				failed = false
 			case err := <-done:
 				if !opts.Watch {
 					return err
 				}
-				fmt.Fprintf(os.Stderr, "process terminated: %v", err)
+				fmt.Fprintf(os.Stderr, "process terminated: %v\n", err)
+				if err != nil {
+					failed = true
+				}
 			}
 		}
 	})
