@@ -26,3 +26,14 @@ automatically and implicitly. If you publish an entrypoint that directly or
 indirectly depends on another package, that package is considered a production
 dependency of the published package. Any dependency that is not required by a
 published package can be logically considered a development dependency.
+
+## Automated Dependency Changes
+
+While undoubtedly convenient for common tasks, commands that edit your
+dependency list automatically are only generally possible in environments
+where the dependency list is treated as a data file instead of source code.
+Since the Unirepo configuration file may contain comments and other structure,
+a command similar to `npm install --save` would potentially corrupt whatever
+organizational scheme has been imposed. Instead, use `npm info` to find the
+latest version number and add it to the dependency list manually. And maybe
+include a comment too!
