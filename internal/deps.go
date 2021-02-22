@@ -5,8 +5,13 @@ import (
 	"os/exec"
 )
 
-func Deps(repo *Repository) error {
+type InstallDependenciesOptions struct {
+	Frozen bool
+}
+
+func InstallDependencies(repo *Repository, opts InstallDependenciesOptions) error {
 	metadata := PackageMetadata{
+		Name:         "@unirepo/generated",
 		Private:      true,
 		Description:  "GENERATED FILE: DO NOT EDIT! This file is managed by unirepo.",
 		Dependencies: repo.Dependencies,
@@ -18,7 +23,12 @@ func Deps(repo *Repository) error {
 		return err
 	}
 
-	npm := exec.Command("npm", "install")
+	subcommand := "install"
+	if opts.Frozen {
+		subcommand = "ci"
+	}
+
+	npm := exec.Command("npm", subcommand)
 	npm.Stdin = os.Stdin
 	npm.Stdout = os.Stdout
 	npm.Stderr = os.Stderr

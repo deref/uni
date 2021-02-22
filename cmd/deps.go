@@ -5,8 +5,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var depsOpts internal.InstallDependenciesOptions
+
 func init() {
 	rootCmd.AddCommand(depsCmd)
+	depsCmd.Flags().BoolVar(&depsOpts.Frozen, "frozen", false, "(unstable) prevents modification of dependency lock file")
 }
 
 var depsCmd = &cobra.Command{
@@ -18,6 +21,6 @@ var depsCmd = &cobra.Command{
 		if err := internal.CheckEngines(repo); err != nil {
 			return err
 		}
-		return internal.Deps(repo)
+		return internal.InstallDependencies(repo, depsOpts)
 	},
 }
