@@ -3,6 +3,7 @@ package internal
 import (
 	"encoding/json"
 	"os"
+	"path"
 )
 
 func ReadJSON(filename string, data interface{}) (err error) {
@@ -23,6 +24,9 @@ func ReadJSON(filename string, data interface{}) (err error) {
 }
 
 func WriteJSON(filename string, data interface{}) (err error) {
+	if err := os.MkdirAll(path.Dir(filename), 0755); err != nil {
+		return err
+	}
 	f, err := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
 	if err != nil {
 		return err
