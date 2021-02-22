@@ -72,6 +72,7 @@ type engineInfo struct {
 	Size    int64     `json:"size"`
 }
 
+// side-effect: updates cache.
 func getEngineInfo(cache map[string]engineInfo, name string) (engineInfo, error) {
 	args, ok := engineCheckers[name]
 	if !ok {
