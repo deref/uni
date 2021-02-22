@@ -34,12 +34,18 @@ func Run(repo *Repository, opts RunOptions) error {
 	}
 	defer os.RemoveAll(dir)
 
-	script := `
+	script := fmt.Sprintf(`
 		require('source-map-support').install();
 		const { main } = require('./bundle.js');
-		const args = process.argv.slice(2);
-		void main(...args);
-	`
+		if (typeof main === 'function') {
+			const args = process.argv.slice(2);
+			void main(...args);
+		} else {
+			process.stdout.write('error: %s does not export a main function\n', () => {
+				process.exit(1);
+			});
+		}
+	`, opts.Entrypoint)
 	scriptPath := path.Join(dir, "script.js")
 	if err := ioutil.WriteFile(scriptPath, []byte(script), 0644); err != nil {
 		return err

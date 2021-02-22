@@ -20,6 +20,7 @@ The script must export a function called "main", which will receive the
 given string args.`,
 	Args:                  cobra.MinimumNArgs(1),
 	DisableFlagsInUseLine: true,
+	SilenceErrors:         true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		repo := mustLoadRepository()
 		if err := internal.CheckEngines(repo); err != nil {
