@@ -12,3 +12,4 @@
 - copy `engines` in to generated package.jsons
 - hash the config file and if it hasn't changed, use `--immutable` deps install.
 - crash on unhandled rejection for `run` command.
+- on sigquit, dump open file handles, waiting promises, etc (is this possible w/o hurting runtime perf?)
