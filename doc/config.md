@@ -31,6 +31,21 @@ anyone to download.
 
 A short description to accompany the package name when published to a registry.
 
+# `engines`
+
+Specifies required external programs versions. If provided, these are checked before running any operations that are sensitive to these programs.
+
+NOTE: These engines are not copied to any generated package.json files yet.
+
+## `engines.<engine-name>: <version>`
+
+`engine-name` must be from the following known list of supported engines:
+
+- `node`
+- `npm`
+
+`version` is the exactly version number expected.
+
 # `dependencies`
 
 A map of dependency package names to their version numbers.

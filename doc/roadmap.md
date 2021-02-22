@@ -9,4 +9,6 @@
 - provide something similar to Go's `internal` packages.
 - generate prettier config.
 - some way to determine which dependencies should be peer dependencies in generated packages.
-- builtin [check-engine](https://github.com/mohlsen/check-engine)
+- copy `engines` in to generated package.jsons
+- hash the config file and if it hasn't changed, use `--immutable` deps install.
+- crash on unhandled rejection for `run` command.

@@ -22,6 +22,9 @@ given string args.`,
 	DisableFlagsInUseLine: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		repo := mustLoadRepository()
+		if err := internal.CheckEngines(repo); err != nil {
+			return err
+		}
 		opts := internal.RunOptions{
 			Watch:      watch,
 			Entrypoint: args[0],

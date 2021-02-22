@@ -14,6 +14,7 @@ type Repository struct {
 	OutDir       string
 	DistDir      string
 	TmpDir       string
+	Engines      map[string]string
 	Packages     map[string]*Package
 	Dependencies map[string]string
 }
@@ -43,6 +44,11 @@ func LoadRepository(searchDir string) (*Repository, error) {
 	var cfg Config
 	if err := dec.Decode(&cfg); err != nil {
 		return nil, err
+	}
+
+	repo.Engines = make(map[string]string)
+	for engineName, engineVersion := range cfg.Engines {
+		repo.Engines[engineName] = engineVersion
 	}
 
 	repo.Packages = make(map[string]*Package)

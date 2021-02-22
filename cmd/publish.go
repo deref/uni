@@ -19,6 +19,9 @@ The package must already be packed. Use the pack command.`,
 	Args: cobra.RangeArgs(0, 1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		repo := mustLoadRepository()
+		if err := internal.CheckEngines(repo); err != nil {
+			return err
+		}
 		switch len(args) {
 		case 0:
 			// TODO: Parallelism.
