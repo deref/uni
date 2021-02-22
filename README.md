@@ -68,10 +68,18 @@ Here's the steps to do in your CI flow:
 
 ## Other Features
 
-- [patch-package][5] is builtin.
+### Patching
+
+The [patch-package][5] utility is always available.
+
+### Engine Checking
+
+Functionality similar to [check-engine][6] is builtin, but much faster
+and with caching.
 
 [1]: https://esbuild.github.io/
 [2]: https://github.com/TypeStrong/ts-node
 [3]: https://github.com/fgnass/node-dev
 [4]: https://github.com/wclr/ts-node-dev
 [5]: https://github.com/ds300/patch-package
+[6]: https://github.com/mohlsen/check-engine
