@@ -9,3 +9,4 @@
 - provide something similar to Go's `internal` packages.
 - generate prettier config.
 - some way to determine which dependencies should be peer dependencies in generated packages.
+- builtin [check-engine](https://github.com/mohlsen/check-engine)
