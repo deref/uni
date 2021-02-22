@@ -88,6 +88,7 @@ func Run(repo *Repository, opts RunOptions) error {
 		Incremental: opts.Watch,
 		Plugins:     plugins,
 		External:    getExternals(repo),
+		Loader:      loaders,
 	})
 
 	g := new(errgroup.Group)

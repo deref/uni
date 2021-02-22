@@ -71,6 +71,7 @@ func Build(repo *Repository, opts BuildOptions) error {
 		Sourcemap:   api.SourceMapLinked,
 		Plugins:     plugins,
 		External:    getExternals(repo),
+		Loader:      loaders,
 	})
 
 	pkgMetadata := PackageMetadata{

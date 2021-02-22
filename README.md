@@ -37,6 +37,8 @@ Alpha! Don't use this yet.
 See the [versioning guide](./doc/versioning.md) and the
 [roadmap](./doc/roadmap.md).
 
+Only works for targeting Node currently. Targeting Browsers is planned.
+
 ## Installation
 
 ```bash
