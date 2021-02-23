@@ -27,6 +27,12 @@ func Build(repo *Repository, opts BuildOptions) error {
 		return err
 	}
 
+	tmpDir, err := TempDir(repo, "build")
+	if err != nil {
+		return err
+	}
+	defer os.RemoveAll(tmpDir)
+
 	var mx sync.Mutex
 	dependencies := make(map[string]string)
 
@@ -59,7 +65,10 @@ func Build(repo *Repository, opts BuildOptions) error {
 		depsPlugin,
 	}
 
+	metafilePath := path.Join(tmpDir, "meta.json")
+
 	mainRelpath := "index.cjs.js"
+
 	result := api.Build(api.BuildOptions{
 		EntryPoints: []string{pkg.Entrypoint},
 		Outfile:     path.Join(packageDir, mainRelpath),
@@ -72,7 +81,12 @@ func Build(repo *Repository, opts BuildOptions) error {
 		Plugins:     plugins,
 		External:    getExternals(repo),
 		Loader:      loaders,
+		Metafile:    metafilePath,
 	})
+
+	if err := checkFences(repo, metafilePath); err != nil {
+		return err
+	}
 
 	pkgMetadata := PackageMetadata{
 		Name:         pkg.Name,

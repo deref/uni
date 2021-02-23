@@ -37,3 +37,12 @@ a command similar to `npm install --save` would potentially corrupt whatever
 organizational scheme has been imposed. Instead, use `npm info` to find the
 latest version number and add it to the dependency list manually. And maybe
 include a comment too!
+
+## Import Cycles
+
+Module import cycles are explicitly disallowed. Cyclic dependencies lead to a
+number of unnecessary complications. Mutual recursion is frequently essential
+to a design, but import cycles are accidental complexity. Any fundamental knots
+can be untangled by hoisting them to a central location and introducing
+indirection. This indirection typically takes the form of interface and
+dependency injection, or mutation during initialization.

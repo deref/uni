@@ -76,9 +76,12 @@ func Run(repo *Repository, opts RunOptions) error {
 		plugins = append(plugins, watchPlugin)
 	}
 
+	bundlePath := path.Join(dir, "bundle.js")
+	metafilePath := path.Join(dir, "meta.json")
+
 	result := api.Build(api.BuildOptions{
 		EntryPoints: []string{opts.Entrypoint},
-		Outfile:     path.Join(dir, "bundle.js"),
+		Outfile:     bundlePath,
 		Bundle:      true,
 		Platform:    api.PlatformNode,
 		Format:      api.FormatCommonJS,
@@ -89,7 +92,12 @@ func Run(repo *Repository, opts RunOptions) error {
 		Plugins:     plugins,
 		External:    getExternals(repo),
 		Loader:      loaders,
+		Metafile:    metafilePath,
 	})
+
+	if err := checkFences(repo, metafilePath); err != nil {
+		return err
+	}
 
 	g := new(errgroup.Group)
 
