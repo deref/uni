@@ -48,6 +48,7 @@ go get -u github.com/brandonbloom/uni
 ## Usage
 
 - [Configuration](./doc/config.md)
+- [Migration Guide](./doc/migrate.md)
 
 ### Setup
 

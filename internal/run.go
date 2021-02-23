@@ -39,7 +39,10 @@ func Run(repo *Repository, opts RunOptions) error {
 		const { main } = require('./bundle.js');
 		if (typeof main === 'function') {
 			const args = process.argv.slice(2);
-			void main(...args);
+			void (async () => {
+				const exitCode = await main(...args);
+				process.exit(exitCode ?? 0);
+			})();
 		} else {
 			process.stdout.write('error: %s does not export a main function\n', () => {
 				process.exit(1);
