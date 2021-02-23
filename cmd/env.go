@@ -28,7 +28,7 @@ not (yet?) intended to be parsed.`,
 			os.Exit(1)
 		}
 		internal.DumpEnvironment(env)
-		if env.Erred {
+		if !env.OK {
 			os.Exit(1)
 		}
 	},

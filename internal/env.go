@@ -12,19 +12,30 @@ import (
 
 type Environment struct {
 	Engines []EnvironmentEngine
-	Erred   bool
+	OK      bool
 }
 
 type EnvironmentEngine struct {
 	Name            string
 	ActualVersion   string
 	ExpectedVersion string
-	Err             error
+	OK              bool
 }
 
 func CheckEngines(repo *Repository) error {
-	_, err := AnalyzeEnvironment(repo)
-	return err
+	env, err := AnalyzeEnvironment(repo)
+	if err != nil {
+		return err
+	}
+	if env.OK {
+		return nil
+	}
+	for _, engine := range env.Engines {
+		if !engine.OK {
+			return fmt.Errorf("engine error: expected %s version %s, but have %s", engine.Name, engine.ExpectedVersion, engine.ActualVersion)
+		}
+	}
+	panic("unreachable")
 }
 
 func AnalyzeEnvironment(repo *Repository) (*Environment, error) {
@@ -41,21 +52,20 @@ func AnalyzeEnvironment(repo *Repository) (*Environment, error) {
 
 	// Run engine checks.
 	var env Environment
+	env.OK = true
 	for engineName, expectedVersion := range repo.Engines {
 		info, err := getEngineInfo(engineCache, engineName)
-		if err == nil && info.Version != expectedVersion {
-			err = fmt.Errorf("unexpected version: %s", info.Version)
+		if err != nil {
+			return nil, fmt.Errorf("error checking %s: %w", engineName, err)
 		}
 		engine := EnvironmentEngine{
 			Name:            engineName,
 			ActualVersion:   info.Version,
 			ExpectedVersion: expectedVersion,
-			Err:             err,
+			OK:              info.Version == expectedVersion,
 		}
 		env.Engines = append(env.Engines, engine)
-		if err != nil {
-			env.Erred = true
-		}
+		env.OK = env.OK && engine.OK
 	}
 
 	// Write updated engine cache.
@@ -138,10 +148,10 @@ func DumpEnvironment(env *Environment) {
 		fmt.Println("engine checks:")
 		for _, engine := range env.Engines {
 			fmt.Printf("  %s version %s ", engine.Name, engine.ExpectedVersion)
-			if engine.Err != nil {
-				fmt.Printf("ERROR: %v\n", engine.Err)
-			} else {
+			if engine.OK {
 				fmt.Println("OK")
+			} else {
+				fmt.Printf("ERROR: actual version %s\n", engine.ActualVersion)
 			}
 		}
 	}
