@@ -80,6 +80,11 @@ The [patch-package][5] utility is always available.
 Functionality similar to [check-engine][6] is builtin, but much faster
 and with caching.
 
+### Executables
+
+Any runnable script can be exposed as an executable in a package. A shim script
+(with a `#!`) will be produced automatically.
+
 [1]: https://esbuild.github.io/
 [2]: https://github.com/TypeStrong/ts-node
 [3]: https://github.com/fgnass/node-dev
