@@ -81,10 +81,18 @@ func LoadRepository(searchDir string) (*Repository, error) {
 	}
 
 	repo.Dependencies = make(map[string]*Dependency)
+	addDependency := func(name, version string) {
+		repo.Dependencies[name] = &Dependency{
+			Name:    name,
+			Version: version,
+		}
+	}
 	for dependencyName, dependencyVersion := range cfg.Dependencies {
-		repo.Dependencies[dependencyName] = &Dependency{
-			Name:    dependencyName,
-			Version: dependencyVersion,
+		addDependency(dependencyName, dependencyVersion)
+	}
+	for dependencyName, dependencyVersion := range requiredDependencies {
+		if _, ok := repo.Dependencies[dependencyName]; !ok {
+			addDependency(dependencyName, dependencyVersion)
 		}
 	}
 
