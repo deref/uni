@@ -1,6 +1,10 @@
 package cmd
 
 import (
+	"fmt"
+	"os"
+	"path/filepath"
+
 	"github.com/brandonbloom/uni/internal"
 	"github.com/spf13/cobra"
 )
@@ -26,11 +30,20 @@ given string args.`,
 		if err := internal.CheckEngines(repo); err != nil {
 			return err
 		}
+
 		opts := internal.RunOptions{
-			Watch:      watch,
-			Entrypoint: args[0],
-			Args:       args[1:],
+			Watch: watch,
 		}
+
+		var err error
+		opts.Entrypoint, err = filepath.Abs(args[0])
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+
+		opts.Args = args[1:]
+
 		return internal.Run(repo, opts)
 	},
 }
