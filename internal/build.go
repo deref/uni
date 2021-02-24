@@ -66,16 +66,17 @@ func Build(repo *Repository, opts BuildOptions) error {
 	indexPath := path.Join(repo.RootDir, pkg.Index)
 
 	buildOpts := api.BuildOptions{
-		Outdir:    packageDir,
-		Bundle:    true,
-		Platform:  api.PlatformNode,
-		Format:    api.FormatCommonJS,
-		Write:     true,
-		LogLevel:  api.LogLevelWarning,
-		Sourcemap: api.SourceMapLinked,
-		Plugins:   plugins,
-		External:  getExternals(repo),
-		Loader:    loaders,
+		AbsWorkingDir: repo.RootDir,
+		Outdir:        packageDir,
+		Bundle:        true,
+		Platform:      api.PlatformNode,
+		Format:        api.FormatCommonJS,
+		Write:         true,
+		LogLevel:      api.LogLevelWarning,
+		Sourcemap:     api.SourceMapLinked,
+		Plugins:       plugins,
+		External:      getExternals(repo),
+		Loader:        loaders,
 		// TODO: Splitting: true,
 	}
 

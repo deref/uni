@@ -81,18 +81,19 @@ func Run(repo *Repository, opts RunOptions) error {
 	}
 
 	result := api.Build(api.BuildOptions{
-		EntryPoints: []string{opts.Entrypoint},
-		Outfile:     path.Join(dir, "bundle.js"),
-		Bundle:      true,
-		Platform:    api.PlatformNode,
-		Format:      api.FormatCommonJS,
-		Write:       true,
-		LogLevel:    api.LogLevelWarning,
-		Sourcemap:   api.SourceMapLinked,
-		Incremental: opts.Watch,
-		Plugins:     plugins,
-		External:    getExternals(repo),
-		Loader:      loaders,
+		AbsWorkingDir: repo.RootDir,
+		EntryPoints:   []string{opts.Entrypoint},
+		Outfile:       path.Join(dir, "bundle.js"),
+		Bundle:        true,
+		Platform:      api.PlatformNode,
+		Format:        api.FormatCommonJS,
+		Write:         true,
+		LogLevel:      api.LogLevelWarning,
+		Sourcemap:     api.SourceMapLinked,
+		Incremental:   opts.Watch,
+		Plugins:       plugins,
+		External:      getExternals(repo),
+		Loader:        loaders,
 	})
 
 	g := new(errgroup.Group)
