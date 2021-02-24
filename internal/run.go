@@ -34,6 +34,7 @@ func Run(repo *Repository, opts RunOptions) error {
 	}
 	defer os.RemoveAll(dir)
 
+	// See also `shim` in Build.
 	script := fmt.Sprintf(`
 		require('source-map-support').install();
 		const { main } = require('./bundle.js');

@@ -14,10 +14,13 @@ func InstallDependencies(repo *Repository, opts InstallDependenciesOptions) erro
 		Name:         "@unirepo/placeholder",
 		Private:      true,
 		Description:  "GENERATED FILE: DO NOT EDIT! This file is managed by unirepo.",
-		Dependencies: repo.Dependencies,
+		Dependencies: make(map[string]string),
 		Scripts: map[string]string{
 			"postinstall": "patch-package",
 		},
+	}
+	for dependencyName, dependency := range repo.Dependencies {
+		metadata.Dependencies[dependencyName] = dependency.Version
 	}
 	if err := WritePackageJSON(metadata, repo.RootDir); err != nil {
 		return err

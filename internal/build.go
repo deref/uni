@@ -2,6 +2,7 @@ package internal
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path"
 	"strings"
@@ -17,8 +18,11 @@ type BuildOptions struct {
 
 func Build(repo *Repository, opts BuildOptions) error {
 	pkg := opts.Package
-	packageDir := path.Join(repo.OutDir, "dist", pkg.Name)
 
+	packageDir := path.Join(repo.OutDir, "dist", pkg.Name)
+	if err := os.RemoveAll(packageDir); err != nil {
+		return err
+	}
 	if err := os.MkdirAll(packageDir, 0755); err != nil {
 		return err
 	}
@@ -45,9 +49,9 @@ func Build(repo *Repository, opts BuildOptions) error {
 					return api.OnResolveResult{}, nil
 				}
 				moduleName := args.Path
-				if version, ok := repo.Dependencies[moduleName]; ok {
+				if dependency, ok := repo.Dependencies[moduleName]; ok {
 					mx.Lock()
-					dependencies[moduleName] = version
+					dependencies[moduleName] = dependency.Version
 					mx.Unlock()
 				}
 				return api.OnResolveResult{}, nil
@@ -59,31 +63,66 @@ func Build(repo *Repository, opts BuildOptions) error {
 		depsPlugin,
 	}
 
-	entrypoint := path.Join(repo.RootDir, pkg.Entrypoint)
+	indexPath := path.Join(repo.RootDir, pkg.Index)
 
-	mainRelpath := "index.cjs.js"
-	result := api.Build(api.BuildOptions{
-		EntryPoints: []string{entrypoint},
-		Outfile:     path.Join(packageDir, mainRelpath),
-		Bundle:      true,
-		Platform:    api.PlatformNode,
-		Format:      api.FormatCommonJS,
-		Write:       true,
-		LogLevel:    api.LogLevelWarning,
-		Sourcemap:   api.SourceMapLinked,
-		Plugins:     plugins,
-		External:    getExternals(repo),
-		Loader:      loaders,
-	})
+	buildOpts := api.BuildOptions{
+		Outdir:    packageDir,
+		Bundle:    true,
+		Platform:  api.PlatformNode,
+		Format:    api.FormatCommonJS,
+		Write:     true,
+		LogLevel:  api.LogLevelWarning,
+		Sourcemap: api.SourceMapLinked,
+		Plugins:   plugins,
+		External:  getExternals(repo),
+		Loader:    loaders,
+		// TODO: Splitting: true,
+	}
+
+	if pkg.Index != "" {
+		buildOpts.EntryPoints = append(buildOpts.EntryPoints, indexPath)
+	}
+
+	bin := make(map[string]string)
+	for executableName, executable := range pkg.Executables {
+		buildOpts.EntryPoints = append(buildOpts.EntryPoints, executable.Entrypoint)
+		bin[executableName] = executableName
+
+		entrypointExt := path.Ext(executable.Entrypoint)
+		entrypointOut := strings.TrimSuffix(path.Base(executable.Entrypoint), entrypointExt) + ".js"
+
+		// See also `script` in Run.
+		shim := fmt.Sprintf(`#!/usr/bin/env node
+			const { main } = require('./%s');
+			const args = process.argv.slice(2);
+			void (async () => {
+				const exitCode = await main(...args);
+				process.exit(exitCode ?? 0);
+			})();
+		`, entrypointOut)
+
+		executablePath := path.Join(packageDir, executableName)
+		if err := ioutil.WriteFile(executablePath, []byte(shim), 0755); err != nil {
+			return err
+		}
+	}
+
+	result := api.Build(buildOpts)
 
 	pkgMetadata := PackageMetadata{
 		Name:         pkg.Name,
 		Private:      !pkg.Public,
 		Description:  pkg.Description,
 		Version:      opts.Version,
-		Main:         mainRelpath,
 		Dependencies: dependencies,
+		Bin:          bin,
 	}
+
+	if pkg.Index != "" {
+		base := path.Base(pkg.Index)
+		pkgMetadata.Main = strings.TrimSuffix(base, path.Ext(pkg.Index)) + ".js"
+	}
+
 	if err := WritePackageJSON(pkgMetadata, packageDir); err != nil {
 		return err
 	}

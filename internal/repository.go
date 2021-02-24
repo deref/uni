@@ -16,14 +16,25 @@ type Repository struct {
 	TmpDir       string
 	Engines      map[string]string
 	Packages     map[string]*Package
-	Dependencies map[string]string
+	Dependencies map[string]*Dependency
+}
+
+type Dependency struct {
+	Name    string
+	Version string
 }
 
 type Package struct {
 	Name        string
 	Public      bool
 	Description string
-	Entrypoint  string
+	Index       string
+	Executables map[string]*Executable
+}
+
+type Executable struct {
+	Name       string
+	Entrypoint string
 }
 
 func LoadRepository(searchDir string) (*Repository, error) {
@@ -53,21 +64,27 @@ func LoadRepository(searchDir string) (*Repository, error) {
 
 	repo.Packages = make(map[string]*Package)
 	for packageName, packageConfig := range cfg.Packages {
-		repo.Packages[packageName] = &Package{
+		pkg := &Package{
 			Name:        packageName,
 			Public:      packageConfig.Public,
 			Description: packageConfig.Description,
-			Entrypoint:  packageConfig.Entrypoint,
+			Index:       packageConfig.Index,
 		}
+		pkg.Executables = make(map[string]*Executable)
+		for executableName, executableEntrypoint := range packageConfig.Executables {
+			pkg.Executables[executableName] = &Executable{
+				Name:       executableName,
+				Entrypoint: executableEntrypoint,
+			}
+		}
+		repo.Packages[packageName] = pkg
 	}
 
-	repo.Dependencies = make(map[string]string)
+	repo.Dependencies = make(map[string]*Dependency)
 	for dependencyName, dependencyVersion := range cfg.Dependencies {
-		repo.Dependencies[dependencyName] = dependencyVersion
-	}
-	for dependencyName, dependencyVersion := range requiredDependencies {
-		if _, ok := repo.Dependencies[dependencyName]; !ok {
-			repo.Dependencies[dependencyName] = dependencyVersion
+		repo.Dependencies[dependencyName] = &Dependency{
+			Name:    dependencyName,
+			Version: dependencyVersion,
 		}
 	}
 

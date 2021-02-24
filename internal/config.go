@@ -1,8 +1,9 @@
 package internal
 
+// TODO: Replace all maps with slices, so that we can detect duplicate keys and
+// preserve order if necessary.
+
 type Config struct {
-	// TODO: Do not load these in as maps, since duplicate keys are
-	// not decectable this way!
 	Engines      map[string]string
 	Packages     map[string]PackageConfig
 	Dependencies map[string]string
@@ -11,6 +12,6 @@ type Config struct {
 type PackageConfig struct {
 	Public      bool
 	Description string
-	Entrypoint  string
-	// TODO: License, author, etc.
+	Index       string
+	Executables map[string]string
 }

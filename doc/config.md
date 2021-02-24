@@ -14,11 +14,19 @@ Map of packages to be published, keyed by name.
 `package-name` is of the form `name` or `@scope/name` as specified
 by NPM.
 
-### `packages.<package-name>.entrypoint`
-
-**Required**
+### `packages.<package-name>.index`
 
 Path to the code file that exports the public interface of the package.
+
+### `packages.<package-name>.executables.<executable-name>: <entrypoint>`
+
+Map of executables to be included in the package.
+
+`executable-name` is the filename to use for an executable program to be
+included in the built package.
+
+`entrypoint` is the path to an entrypoint module which is suitable for use
+with `uni run` (ie. it must export a `main` function).
 
 ### `packages.<package-name>.public`
 

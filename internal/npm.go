@@ -12,8 +12,9 @@ type PackageMetadata struct {
 	Version      string            `json:"version,omitempty"`
 	Private      bool              `json:"private"`
 	Main         string            `json:"main,omitempty"`
-	Dependencies map[string]string `json:"dependencies"`
-	Scripts      map[string]string `json:"scripts"`
+	Bin          map[string]string `json:"bin,omitempty"`
+	Dependencies map[string]string `json:"dependencies,omitempty"`
+	Scripts      map[string]string `json:"scripts,omitempty"`
 }
 
 func WritePackageJSON(metadata PackageMetadata, dir string) error {
