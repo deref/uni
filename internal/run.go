@@ -107,7 +107,7 @@ if (typeof main === 'function') {
 			}
 		}
 
-		failed := false
+		stopped := false
 		for {
 			nodeArgs := append([]string{scriptPath}, opts.Args...)
 			node := exec.Command("node", nodeArgs...)
@@ -115,7 +115,7 @@ if (typeof main === 'function') {
 			node.Stdout = os.Stdout
 			node.Stderr = os.Stderr
 			done := make(chan error, 1)
-			if !failed {
+			if !stopped {
 				if err := node.Start(); err != nil {
 					if !opts.Watch {
 						return err
@@ -144,19 +144,20 @@ if (typeof main === 'function') {
 						break loop
 					}
 				}
-				if err := node.Process.Kill(); err != nil {
-					fmt.Fprintf(os.Stderr, "could not kill: %v\n", err)
+				proc := node.Process
+				if proc != nil {
+					if err := proc.Kill(); err != nil {
+						fmt.Fprintf(os.Stderr, "could not kill: %v\n", err)
+					}
 				}
 				result = result.Rebuild()
-				failed = false
+				stopped = false
 			case err := <-done:
 				if !opts.Watch {
 					return err
 				}
 				fmt.Fprintf(os.Stderr, "process terminated: %v\n", err)
-				if err != nil {
-					failed = true
-				}
+				stopped = true
 			}
 		}
 	})
