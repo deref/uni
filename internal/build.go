@@ -94,13 +94,13 @@ func Build(repo *Repository, opts BuildOptions) error {
 
 		// See also `script` in Run.
 		shim := fmt.Sprintf(`#!/usr/bin/env node
-			const { main } = require('./%s');
-			const args = process.argv.slice(2);
-			void (async () => {
-				const exitCode = await main(...args);
-				process.exit(exitCode ?? 0);
-			})();
-		`, entrypointOut)
+const { main } = require('./%s');
+const args = process.argv.slice(2);
+void (async () => {
+	const exitCode = await main(...args);
+	process.exit(exitCode ?? 0);
+})();
+`, entrypointOut)
 
 		executablePath := path.Join(packageDir, executableName)
 		if err := ioutil.WriteFile(executablePath, []byte(shim), 0755); err != nil {

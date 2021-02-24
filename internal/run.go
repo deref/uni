@@ -35,21 +35,20 @@ func Run(repo *Repository, opts RunOptions) error {
 	defer os.RemoveAll(dir)
 
 	// See also `shim` in Build.
-	script := fmt.Sprintf(`
-		require('source-map-support').install();
-		const { main } = require('./bundle.js');
-		if (typeof main === 'function') {
-			const args = process.argv.slice(2);
-			void (async () => {
-				const exitCode = await main(...args);
-				process.exit(exitCode ?? 0);
-			})();
-		} else {
-			process.stdout.write('error: %s does not export a main function\n', () => {
-				process.exit(1);
-			});
-		}
-	`, opts.Entrypoint)
+	script := fmt.Sprintf(`require('source-map-support').install();
+const { main } = require('./bundle.js');
+if (typeof main === 'function') {
+	const args = process.argv.slice(2);
+	void (async () => {
+		const exitCode = await main(...args);
+		process.exit(exitCode ?? 0);
+	})();
+} else {
+	process.stdout.write('error: %s does not export a main function\n', () => {
+		process.exit(1);
+	});
+}
+`, opts.Entrypoint)
 	scriptPath := path.Join(dir, "script.js")
 	if err := ioutil.WriteFile(scriptPath, []byte(script), 0644); err != nil {
 		return err
