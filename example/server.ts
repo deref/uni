@@ -9,4 +9,6 @@ export const main = async (...args: string[]) => {
     })
     .listen(port);
   console.log("listening on port:", port);
+  // Block forever.
+  await new Promise((accept) => {});
 };

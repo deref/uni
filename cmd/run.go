@@ -20,8 +20,23 @@ var runCmd = &cobra.Command{
 	Use:   "run [flags] <script> [args...]",
 	Short: "Build and run an entrypoint.",
 	Long: `Builds and runs the given entrypoint file.
-The script must export a function called "main", which will receive the
-given string args.`,
+
+Entrypoint files are modules that export a "main" function, which will be called
+with the given 'args' as positional parameters.
+
+Main functions may return an integer status code, and the return value will
+will be awaited.  If no status code is returned, the default is 0.
+
+After awaiting a return value, the process will be terminated immediately.  Any
+pending events will not be executed; main is responsible for graceful shutdown.
+
+Example:
+
+export const main = async (...args: string[]) => {
+  console.log("see uni run");
+  return 0; // Return an exit code (optional).
+}
+`,
 	Args:                  cobra.MinimumNArgs(1),
 	DisableFlagsInUseLine: true,
 	SilenceErrors:         true,

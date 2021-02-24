@@ -20,3 +20,7 @@ export const main = async (...args: string[]) => {
 This is because `uni run` does not make a distinction between modules and
 scripts; there are only modules. It should always be safe and side-effect free
 to load a (trusted) module.
+
+Note that run processes will terminate as soon as the main function returns.
+This differs from Node's default behavior where a non-empty event loop will
+keep the program alive indefinitely
