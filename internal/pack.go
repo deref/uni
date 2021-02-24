@@ -12,21 +12,25 @@ import (
 	"strings"
 )
 
-func Pack(repo *Repository, pkg *Package) error {
+type PackResult struct {
+	PackagePath string
+}
+
+func Pack(repo *Repository, pkg *Package) (PackResult, error) {
 	packedDir := path.Join(repo.OutDir, "packed")
 	if err := os.MkdirAll(packedDir, 0755); err != nil {
-		return err
+		return PackResult{}, err
 	}
 
 	distPath := path.Join(repo.DistDir, pkg.Name)
 	metadata, err := ReadPackageJSON(distPath)
 	if err != nil {
-		return err
+		return PackResult{}, err
 	}
 
 	version := metadata.Version
 	if version == "" {
-		return errors.New("version not set in package build")
+		return PackResult{}, errors.New("version not set in package build")
 	}
 
 	strippedName := stripName(pkg.Name)
@@ -35,7 +39,7 @@ func Pack(repo *Repository, pkg *Package) error {
 	packedPath := path.Join(packedDir, packedName)
 	packedFile, err := os.Create(packedPath)
 	if err != nil {
-		return err
+		return PackResult{}, err
 	}
 	defer packedFile.Close()
 
@@ -82,24 +86,26 @@ func Pack(repo *Repository, pkg *Package) error {
 	})
 
 	if err := tw.Close(); err != nil {
-		return err
+		return PackResult{}, err
 	}
 	if err := zw.Close(); err != nil {
-		return err
+		return PackResult{}, err
 	}
 
 	resultName := strippedName + ".tgz"
 	resultPath := path.Join(packedDir, resultName)
 	if err := os.Remove(resultPath); err != nil {
 		if !os.IsNotExist(err) {
-			return err
+			return PackResult{}, err
 		}
 	}
 	if err := os.Symlink(packedPath, resultPath); err != nil {
-		return err
+		return PackResult{}, err
 	}
 
-	return nil
+	return PackResult{
+		PackagePath: packedPath,
+	}, nil
 }
 
 func stripName(name string) string {

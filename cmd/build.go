@@ -25,27 +25,31 @@ Given no arguments, builds all packages. Otherwise, builds only the specified pa
 		if err := internal.CheckEngines(repo); err != nil {
 			return err
 		}
+
+		var packages map[string]*internal.Package
 		switch len(args) {
 		case 0:
-			// TODO: Parallelism.
-			for pkgName, pkg := range repo.Packages {
-				buildOpts.Package = pkg
-				fmt.Println("building", pkgName)
-				if err := internal.Build(repo, buildOpts); err != nil {
-					return err
-				}
-			}
-			return nil
+			packages = repo.Packages
 		case 1:
 			pkgName := args[0]
 			pkg, ok := repo.Packages[pkgName]
 			if !ok {
 				return fmt.Errorf("no such package: %q", pkgName)
 			}
-			buildOpts.Package = pkg
-			return internal.Build(repo, buildOpts)
+			packages = map[string]*internal.Package{
+				pkgName: pkg,
+			}
 		default:
 			panic("unreachable")
 		}
+
+		// TODO: Parallelism.
+		for _, pkg := range packages {
+			buildOpts.Package = pkg
+			if err := internal.Build(repo, buildOpts); err != nil {
+				return err
+			}
+		}
+		return nil
 	},
 }
