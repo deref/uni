@@ -59,9 +59,11 @@ func Build(repo *Repository, opts BuildOptions) error {
 		depsPlugin,
 	}
 
+	entrypoint := path.Join(repo.RootDir, pkg.Entrypoint)
+
 	mainRelpath := "index.cjs.js"
 	result := api.Build(api.BuildOptions{
-		EntryPoints: []string{pkg.Entrypoint},
+		EntryPoints: []string{entrypoint},
 		Outfile:     path.Join(packageDir, mainRelpath),
 		Bundle:      true,
 		Platform:    api.PlatformNode,
