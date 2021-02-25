@@ -1,3 +1,20 @@
+// Cases to handle
+//
+// without watch
+//   build error
+//   build ok
+//     program fails to start
+//     program terminates success
+//     program terminates failure
+//
+// with watch
+//   build error
+//   build ok                              waitForChange
+//     program fails to start                  true      wait for change
+//     program terminates prematurely          true      wait for change
+//     code changes                            false     restart
+//     interrupt                               false     exi
+
 package internal
 
 import (
@@ -116,7 +133,7 @@ if (typeof main === 'function') {
 			}
 		}
 
-		stopped := false
+		waitForChange := false
 		for {
 			nodeArgs := append([]string{scriptPath}, opts.Args...)
 			node := exec.Command("node", nodeArgs...)
@@ -124,12 +141,16 @@ if (typeof main === 'function') {
 			node.Stdout = os.Stdout
 			node.Stderr = os.Stderr
 			done := make(chan error, 1)
-			if !stopped {
+
+			buildOK := len(result.Errors) == 0
+			shouldStart := buildOK && !waitForChange
+			if shouldStart {
 				if err := node.Start(); err != nil {
 					if !opts.Watch {
 						return err
 					}
 					fmt.Fprintf(os.Stderr, "could not start: %v\n", err)
+					waitForChange = true
 				} else {
 					go func() {
 						done <- node.Wait()
@@ -160,13 +181,13 @@ if (typeof main === 'function') {
 					}
 				}
 				result = result.Rebuild()
-				stopped = false
+				waitForChange = false
 			case err := <-done:
 				if !opts.Watch {
 					return err
 				}
 				fmt.Fprintf(os.Stderr, "process terminated: %v\n", err)
-				stopped = true
+				waitForChange = true
 			}
 		}
 	})
