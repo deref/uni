@@ -196,13 +196,11 @@ if (typeof main === 'function') {
 		g.Go(func() error {
 			for {
 				select {
-				case event, ok := <-watcher.Events:
+				case _, ok := <-watcher.Events:
 					if !ok {
 						return nil
 					}
-					if event.Op&fsnotify.Write == fsnotify.Write {
-						restart <- struct{}{}
-					}
+					restart <- struct{}{}
 				case err, ok := <-watcher.Errors:
 					if !ok {
 						close(abort)
