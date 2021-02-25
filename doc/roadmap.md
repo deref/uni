@@ -15,6 +15,8 @@ Need to support prefered production engine version, plus supported engine
 ranges for published packages. These are two different things and need to
 be treated differently.
 
+Also needed: _self_ engine check. Validating current version of Unirepo.
+
 ## TypeScript
 
 - Generate `tsconfig.json` file.
