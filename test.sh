@@ -11,5 +11,8 @@ for snapshot in $(ls snapshot); do
     cd "snapshot/$snapshot"
     pwd
     ./build.sh 2>stderr >stdout || true
+
+    # Cleanup some non-determinsim in the output.
+    perl -pi -e 's/^audited (\d+) packages in (.*?)s$/audited $1 packages in SOME_AMOUNT_OF_TIME/g' stdout
   )
 done

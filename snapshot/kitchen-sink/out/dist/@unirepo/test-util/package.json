@@ -1,0 +1,5 @@
+{
+  "name": "@unirepo/test-util",
+  "private": true,
+  "main": "util.js"
+}
