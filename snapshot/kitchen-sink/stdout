@@ -1,0 +1,13 @@
+
+> @unirepo/placeholder@ postinstall /Users/brandonbloom/Projects/unirepo/snapshot/kitchen-sink
+> patch-package
+
+patch-package 6.2.2
+Applying patches...
+audited 153 packages in 0.673s
+
+1 package is looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+

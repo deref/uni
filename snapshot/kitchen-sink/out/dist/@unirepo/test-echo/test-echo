@@ -1,0 +1,7 @@
+#!/usr/bin/env node
+const { main } = require('./echo.js');
+const args = process.argv.slice(2);
+void (async () => {
+	const exitCode = await main(...args);
+	process.exit(exitCode ?? 0);
+})();

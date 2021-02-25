@@ -1,0 +1,9 @@
+engines:
+  node: "v14.15.5"
+  npm: "6.14.11"
+
+packages:
+  # Package with only an executable.
+  "@unirepo/test-echo":
+    executables:
+      test-echo: echo.ts

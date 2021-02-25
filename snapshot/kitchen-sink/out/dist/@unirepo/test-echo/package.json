@@ -1,0 +1,7 @@
+{
+  "name": "@unirepo/test-echo",
+  "private": true,
+  "bin": {
+    "test-echo": "test-echo"
+  }
+}
