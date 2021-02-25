@@ -1,19 +1,22 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 
 	"github.com/brandonbloom/uni/internal"
 	"github.com/spf13/cobra"
 )
 
-var watch bool
+var runOpts = internal.RunOptions{}
 
 func init() {
 	rootCmd.AddCommand(runCmd)
-	runCmd.Flags().BoolVar(&watch, "watch", false, "re-runs command when source files change")
+	runCmd.Flags().BoolVar(&runOpts.Watch, "watch", false, "re-runs command when source files change")
+	runCmd.Flags().BoolVar(&runOpts.BuildOnly, "build-only", false, "(internal) exit before running, skip temporary file cleanup, and print path to build output")
 }
 
 var runCmd = &cobra.Command{
@@ -46,19 +49,20 @@ export const main = async (...args: string[]) => {
 			return err
 		}
 
-		opts := internal.RunOptions{
-			Watch: watch,
-		}
-
 		var err error
-		opts.Entrypoint, err = filepath.Abs(args[0])
+		runOpts.Entrypoint, err = filepath.Abs(args[0])
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
 		}
 
-		opts.Args = args[1:]
+		runOpts.Args = args[1:]
 
-		return internal.Run(repo, opts)
+		err = internal.Run(repo, runOpts)
+		var exitErr *exec.ExitError
+		if errors.As(err, &exitErr) {
+			os.Exit(exitErr.ExitCode())
+		}
+		return err
 	},
 }

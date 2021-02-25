@@ -1,5 +1,5 @@
 
-> @unirepo/placeholder@ postinstall /Users/brandonbloom/Projects/unirepo/snapshot/empty
+> @unirepo/placeholder@ postinstall /Users/brandonbloom/Projects/unirepo/snapshot/running
 > patch-package
 
 patch-package 6.2.2
@@ -11,3 +11,5 @@ audited 153 packages in SOME_AMOUNT_OF_TIME
 
 found 0 vulnerabilities
 
+exit code expected=0 actual=0
+exit code expected=5 actual=5

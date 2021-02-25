@@ -18,11 +18,13 @@ type RunOptions struct {
 	Watch      bool
 	Entrypoint string
 	Args       []string
+	BuildOnly  bool
 }
 
 // TODO: Need to handle interrupts in order to have a higher chance
 // of cleaning up temporary files.
 
+// Status code may be returend within an exec.ExitError return value.
 func Run(repo *Repository, opts RunOptions) error {
 	if err := EnsureTmp(repo); err != nil {
 		return err
@@ -32,7 +34,9 @@ func Run(repo *Repository, opts RunOptions) error {
 	if err != nil {
 		return err
 	}
-	defer os.RemoveAll(dir)
+	if !opts.BuildOnly {
+		defer os.RemoveAll(dir)
+	}
 
 	// See also `shim` in Build.
 	script := fmt.Sprintf(`require('source-map-support').install();
@@ -94,6 +98,11 @@ if (typeof main === 'function') {
 		External:      getExternals(repo),
 		Loader:        loaders,
 	})
+
+	if opts.BuildOnly {
+		fmt.Println(dir)
+		return nil
+	}
 
 	g := new(errgroup.Group)
 

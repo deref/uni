@@ -2,6 +2,7 @@ package internal
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"path"
 
@@ -53,7 +54,12 @@ func LoadRepository(searchDir string) (*Repository, error) {
 
 	dec := yaml.NewDecoder(f)
 	var cfg Config
-	if err := dec.Decode(&cfg); err != nil {
+	err = dec.Decode(&cfg)
+	if err == io.EOF {
+		// TODO: Should entirely empty config files be allowed? Probably not.
+		err = nil
+	}
+	if err != nil {
 		return nil, err
 	}
 
