@@ -4,9 +4,9 @@
 
 patch-package 6.2.2
 Applying patches...
-audited 153 packages in SOME_AMOUNT_OF_TIME
+audited 154 packages in SOME_AMOUNT_OF_TIME
 
-1 package is looking for funding
+SOME_NUMBER_OF packages are looking for funding
   run `npm fund` for details
 
 found 0 vulnerabilities

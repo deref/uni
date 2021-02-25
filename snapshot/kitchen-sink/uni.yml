@@ -11,3 +11,6 @@ packages:
   # Package with only exports.
   "@unirepo/test-util":
     index: util.ts
+
+dependencies:
+  date-fns: 2.17.0

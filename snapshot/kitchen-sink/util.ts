@@ -1,3 +1,5 @@
+import { formatISO } from "date-fns";
+
 export const first = <T>(xs: T[]): T => {
   if (xs.length === 0) {
     throw Error("first of empty array");
@@ -12,3 +14,10 @@ export const last = <T>(xs: T[]): T => {
   }
   return xs[n - 1];
 };
+
+export const reverse = <T>(xs: T[]): T[] => {
+  const ys = xs.slice();
+  return ys.reverse();
+};
+
+export const nowISO = () => formatISO(new Date());

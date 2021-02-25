@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["../../../../util.ts"],
-  "sourcesContent": ["export const first = <T>(xs: T[]): T => {\n  if (xs.length === 0) {\n    throw Error(\"first of empty array\");\n  }\n  return xs[0];\n};\n\nexport const last = <T>(xs: T[]): T => {\n  const n = xs.length;\n  if (n === 0) {\n    throw Error(\"last of empty array\");\n  }\n  return xs[n - 1];\n};\n"],
-  "mappings": ";;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAO,IAAM,QAAQ,CAAI;AACvB,MAAI,GAAG,WAAW;AAChB,UAAM,MAAM;AAAA;AAEd,SAAO,GAAG;AAAA;AAGL,IAAM,OAAO,CAAI;AACtB,QAAM,IAAI,GAAG;AACb,MAAI,MAAM;AACR,UAAM,MAAM;AAAA;AAEd,SAAO,GAAG,IAAI;AAAA;",
+  "sourcesContent": ["import { formatISO } from \"date-fns\";\n\nexport const first = <T>(xs: T[]): T => {\n  if (xs.length === 0) {\n    throw Error(\"first of empty array\");\n  }\n  return xs[0];\n};\n\nexport const last = <T>(xs: T[]): T => {\n  const n = xs.length;\n  if (n === 0) {\n    throw Error(\"last of empty array\");\n  }\n  return xs[n - 1];\n};\n\nexport const reverse = <T>(xs: T[]): T[] => {\n  const ys = xs.slice();\n  return ys.reverse();\n};\n\nexport const nowISO = () => formatISO(new Date());\n"],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,sBAA0B;AAEnB,IAAM,QAAQ,CAAI;AACvB,MAAI,GAAG,WAAW;AAChB,UAAM,MAAM;AAAA;AAEd,SAAO,GAAG;AAAA;AAGL,IAAM,OAAO,CAAI;AACtB,QAAM,IAAI,GAAG;AACb,MAAI,MAAM;AACR,UAAM,MAAM;AAAA;AAEd,SAAO,GAAG,IAAI;AAAA;AAGT,IAAM,UAAU,CAAI;AACzB,QAAM,KAAK,GAAG;AACd,SAAO,GAAG;AAAA;AAGL,IAAM,SAAS,MAAM,0BAAU,IAAI;",
   "names": []
 }

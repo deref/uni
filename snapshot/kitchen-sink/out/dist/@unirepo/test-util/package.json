@@ -1,5 +1,8 @@
 {
   "name": "@unirepo/test-util",
   "private": true,
-  "main": "util.js"
+  "main": "util.js",
+  "dependencies": {
+    "date-fns": "2.17.0"
+  }
 }
