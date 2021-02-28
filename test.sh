@@ -6,7 +6,13 @@ go build
 
 export PATH="$PWD:$PATH"
 
-for snapshot in $(ls snapshot); do
+if [[ $# == 0 ]]; then
+  snapshots=$(ls snapshot)
+else
+  snapshots="$@"
+fi
+
+for snapshot in $snapshots; do
   (
     cd "snapshot/$snapshot"
     pwd
