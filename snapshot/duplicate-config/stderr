@@ -1,0 +1,5 @@
+[3:3] duplicate key "duplicate-package"
+       1 | packages:
+       2 |   duplicate-package: 1
+    >  3 |   duplicate-package: 2
+             ^

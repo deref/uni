@@ -6,7 +6,7 @@ import (
 	"os"
 	"path"
 
-	"gopkg.in/yaml.v2"
+	"github.com/goccy/go-yaml"
 )
 
 type Repository struct {
@@ -52,8 +52,7 @@ func LoadRepository(searchDir string) (*Repository, error) {
 	repo.DistDir = path.Join(repo.OutDir, "dist")
 	repo.TmpDir = path.Join(repo.OutDir, "tmp")
 
-	dec := yaml.NewDecoder(f)
-	dec.SetStrict(true)
+	dec := yaml.NewDecoder(f, yaml.Strict())
 	var cfg Config
 	err = dec.Decode(&cfg)
 	if err == io.EOF {
