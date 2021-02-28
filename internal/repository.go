@@ -53,6 +53,7 @@ func LoadRepository(searchDir string) (*Repository, error) {
 	repo.TmpDir = path.Join(repo.OutDir, "tmp")
 
 	dec := yaml.NewDecoder(f)
+	dec.SetStrict(true)
 	var cfg Config
 	err = dec.Decode(&cfg)
 	if err == io.EOF {

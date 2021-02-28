@@ -1,0 +1,2 @@
+yaml: unmarshal errors:
+  line 1: field bogus-key not found in type internal.Config
