@@ -43,3 +43,17 @@ Also needed: _self_ engine check. Validating current version of Unirepo.
 - disallow cyclic imports.
 - automatically support absolute imports from `~`.
 - disallow `..` in imports.
+
+## REPL
+
+It should be possible to run `uni repl` to get a TypeScript-enabled REPL
+in the correct enviornment.
+
+## Bin Stubs
+
+When specifying dependencies, it should be possible to specify a subset
+of executables for which stub shell scripts would be generated and placed
+in to `./bin`. These executables would check engines before executing.
+
+It might also be desirable to create `node` and `npm` binstubs to alleviate the
+need for a node version manager.
