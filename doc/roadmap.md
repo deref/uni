@@ -46,8 +46,7 @@ Also needed: _self_ engine check. Validating current version of Unirepo.
 
 ## REPL
 
-It should be possible to run `uni repl` to get a TypeScript-enabled REPL
-in the correct enviornment.
+`uni repl` should support TypeScript syntax.
 
 ## Bin Stubs
 
