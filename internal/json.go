@@ -2,6 +2,7 @@ package internal
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"path"
 )
@@ -18,7 +19,7 @@ func ReadJSON(filename string, data interface{}) (err error) {
 	}()
 	dec := json.NewDecoder(f)
 	if err := dec.Decode(data); err != nil {
-		return err
+		return fmt.Errorf("error decoding %q: %w", filename, err)
 	}
 	return
 }
