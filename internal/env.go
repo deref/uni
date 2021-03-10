@@ -47,7 +47,7 @@ func AnalyzeEnvironment(repo *Repository) (*Environment, error) {
 		err = nil
 	}
 	if err != nil {
-		return nil, err
+		Warnf("failed to read engine cache: %v", err)
 	}
 
 	// Run engine checks.
