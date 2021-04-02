@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/brandonbloom/uni/internal"
+	"github.com/deref/uni/internal"
 	"github.com/spf13/cobra"
 )
 

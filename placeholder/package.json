@@ -5,8 +5,8 @@
   "description": "An empty package to reserve this package name.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/brandonbloom/uni.git"
+    "url": "git+https://github.com/deref/uni.git"
   },
   "license": "MIT",
-  "homepage": "https://github.com/brandonbloom/uni#readme"
+  "homepage": "https://github.com/deref/uni#readme"
 }

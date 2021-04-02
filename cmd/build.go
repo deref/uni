@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/brandonbloom/uni/internal"
+	"github.com/deref/uni/internal"
 	"github.com/spf13/cobra"
 )
 

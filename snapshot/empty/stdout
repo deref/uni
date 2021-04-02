@@ -1,5 +1,5 @@
 
-> @unirepo/placeholder@ postinstall /Users/brandonbloom/Projects/unirepo/snapshot/empty
+> @unirepo/placeholder@ postinstall /Users/deref/Projects/unirepo/snapshot/empty
 > patch-package
 
 patch-package 6.2.2

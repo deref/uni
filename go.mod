@@ -1,4 +1,4 @@
-module github.com/brandonbloom/uni
+module github.com/deref/uni
 
 go 1.15
 

@@ -42,7 +42,7 @@ Only works for targeting Node currently. Targeting Browsers is planned.
 ## Installation
 
 ```bash
-go get -u github.com/brandonbloom/uni
+go get -u github.com/deref/uni
 ```
 
 ## Usage

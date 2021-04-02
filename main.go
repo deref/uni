@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/brandonbloom/uni/cmd"
+	"github.com/deref/uni/cmd"
 )
 
 func main() {

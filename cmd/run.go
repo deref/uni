@@ -7,7 +7,7 @@ import (
 	"os/exec"
 	"path/filepath"
 
-	"github.com/brandonbloom/uni/internal"
+	"github.com/deref/uni/internal"
 	"github.com/spf13/cobra"
 )
 
