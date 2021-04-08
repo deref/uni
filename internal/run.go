@@ -20,15 +20,11 @@ package internal
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"os/exec"
 	"path"
-	"time"
 
 	"github.com/evanw/esbuild/pkg/api"
-	"github.com/fsnotify/fsnotify"
-	"golang.org/x/sync/errgroup"
 )
 
 type RunOptions struct {
@@ -75,142 +71,60 @@ if (typeof main === 'function') {
 		return err
 	}
 
-	var plugins []api.Plugin
-
-	var watcher *fsnotify.Watcher
-	if opts.Watch {
-		var err error
-		watcher, err = fsnotify.NewWatcher()
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer watcher.Close()
-
-		watchPlugin := api.Plugin{
-			Name: "unirepo:watch",
-			Setup: func(build api.PluginBuild) {
-				build.OnLoad(api.OnLoadOptions{
-					Filter: ".*",
-				}, func(args api.OnLoadArgs) (api.OnLoadResult, error) {
-					err := watcher.Add(args.Path)
-					return api.OnLoadResult{}, err
-				})
-			},
-		}
-		plugins = append(plugins, watchPlugin)
-	}
-
-	result := api.Build(api.BuildOptions{
-		AbsWorkingDir: repo.RootDir,
-		EntryPoints:   []string{opts.Entrypoint},
-		Outfile:       path.Join(dir, "bundle.js"),
-		Bundle:        true,
-		Platform:      api.PlatformNode,
-		Format:        api.FormatCommonJS,
-		Write:         true,
-		LogLevel:      api.LogLevelWarning,
-		Sourcemap:     api.SourceMapLinked,
-		Incremental:   opts.Watch,
-		Plugins:       plugins,
-		External:      getExternals(repo),
-		Loader:        loaders,
-	})
-
-	if opts.BuildOnly {
-		fmt.Println(dir)
-		return nil
-	}
-
-	g := new(errgroup.Group)
-
-	abort := make(chan struct{})
-	restart := make(chan struct{}, 1)
-
-	g.Go(func() error {
-		if len(result.Errors) > 0 {
-			if !opts.Watch {
-				return fmt.Errorf("build error")
+	return buildAndWatch{
+		Watch: opts.Watch && !opts.BuildOnly,
+		Esbuild: api.BuildOptions{
+			AbsWorkingDir: repo.RootDir,
+			EntryPoints:   []string{opts.Entrypoint},
+			Outfile:       path.Join(dir, "bundle.js"),
+			Bundle:        true,
+			Platform:      api.PlatformNode,
+			Format:        api.FormatCommonJS,
+			Write:         true,
+			LogLevel:      api.LogLevelWarning,
+			Sourcemap:     api.SourceMapLinked,
+			External:      getExternals(repo),
+			Loader:        loaders,
+		},
+		CreateProcess: func() process {
+			if opts.BuildOnly {
+				return &funcProcess{
+					start: func() error {
+						fmt.Println(dir)
+						return nil
+					},
+				}
 			}
-		}
 
-		waitForChange := false
-		for {
 			nodeArgs := append([]string{scriptPath}, opts.Args...)
 			node := exec.Command("node", nodeArgs...)
 			node.Stdin = os.Stdin
 			node.Stdout = os.Stdout
 			node.Stderr = os.Stderr
-			done := make(chan error, 1)
 
-			buildOK := len(result.Errors) == 0
-			shouldStart := buildOK && !waitForChange
-			if shouldStart {
-				if err := node.Start(); err != nil {
-					if !opts.Watch {
-						return err
-					}
-					fmt.Fprintf(os.Stderr, "could not start: %v\n", err)
-					waitForChange = true
-				} else {
-					go func() {
-						done <- node.Wait()
-					}()
-				}
-			}
-			select {
-			case <-abort:
-				if err := node.Process.Kill(); err != nil {
-					fmt.Fprintf(os.Stderr, "could not kill: %v\n", err)
-				}
-				return nil
-			case <-restart:
-			loop:
-				for {
-					// Absorb extra restarts for a little while in case many files are changing at once.
-					delay := time.After(50 * time.Millisecond)
-					select {
-					case <-restart:
-					case <-delay:
-						break loop
-					}
-				}
-				proc := node.Process
-				if proc != nil {
-					if err := proc.Kill(); err != nil {
-						fmt.Fprintf(os.Stderr, "could not kill: %v\n", err)
-					}
-				}
-				result = result.Rebuild()
-				waitForChange = false
-			case err := <-done:
-				if !opts.Watch {
-					return err
-				}
-				fmt.Fprintf(os.Stderr, "process terminated: %v\n", err)
-				waitForChange = true
-			}
-		}
-	})
+			return &cmdProcess{cmd: node}
+		},
+	}.Run()
+}
 
-	if opts.Watch {
-		g.Go(func() error {
-			for {
-				select {
-				case _, ok := <-watcher.Events:
-					if !ok {
-						return nil
-					}
-					restart <- struct{}{}
-				case err, ok := <-watcher.Errors:
-					if !ok {
-						close(abort)
-						return err
-					}
-				}
-			}
-		})
+type cmdProcess struct {
+	cmd *exec.Cmd
+}
+
+func (proc *cmdProcess) Start() error {
+	return proc.cmd.Start()
+}
+
+func (proc *cmdProcess) Kill() error {
+	if proc.cmd.Process == nil {
+		return nil
 	}
+	return proc.cmd.Process.Kill()
+}
 
-	return g.Wait()
-
+func (proc *cmdProcess) Wait() error {
+	if proc.cmd.Process == nil {
+		return nil
+	}
+	return proc.cmd.Wait()
 }

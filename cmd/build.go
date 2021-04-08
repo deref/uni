@@ -12,6 +12,7 @@ var buildOpts internal.BuildOptions
 func init() {
 	rootCmd.AddCommand(buildCmd)
 	buildCmd.Flags().StringVar(&buildOpts.Version, "version", "", "version to put in package.json")
+	buildCmd.Flags().BoolVar(&buildOpts.Watch, "watch", false, "rebuilds each time source files change")
 }
 
 var buildCmd = &cobra.Command{
