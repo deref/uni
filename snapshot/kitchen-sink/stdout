@@ -1,5 +1,5 @@
 
-> @unirepo/placeholder@ postinstall /Users/deref/Projects/unirepo/snapshot/kitchen-sink
+> @unirepo/placeholder@ postinstall /current/working/path/snapshot/kitchen-sink
 > patch-package
 
 patch-package 6.2.2
