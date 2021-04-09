@@ -72,7 +72,8 @@ if (typeof main === 'function') {
 	}
 
 	return buildAndWatch{
-		Watch: opts.Watch && !opts.BuildOnly,
+		Repository: repo,
+		Watch:      opts.Watch && !opts.BuildOnly,
 		Esbuild: api.BuildOptions{
 			AbsWorkingDir: repo.RootDir,
 			EntryPoints:   []string{opts.Entrypoint},

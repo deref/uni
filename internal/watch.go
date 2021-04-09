@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/evanw/esbuild/pkg/api"
@@ -12,6 +13,7 @@ import (
 )
 
 type buildAndWatch struct {
+	Repository    *Repository
 	Esbuild       api.BuildOptions // XXX smaller option set.
 	Watch         bool
 	CreateProcess func() process
@@ -24,6 +26,8 @@ type process interface {
 }
 
 func (opts buildAndWatch) Run() error {
+	repo := opts.Repository
+
 	plugins := append([]api.Plugin{}, opts.Esbuild.Plugins...)
 
 	var watcher *fsnotify.Watcher
@@ -55,6 +59,9 @@ func (opts buildAndWatch) Run() error {
 
 	if opts.Watch {
 		for _, entrypoint := range esbuildOpts.EntryPoints {
+			if !filepath.IsAbs(entrypoint) {
+				entrypoint = filepath.Join(repo.RootDir, entrypoint)
+			}
 			if err := watcher.Add(entrypoint); err != nil {
 				return fmt.Errorf("watching %q: %w", entrypoint, err)
 			}

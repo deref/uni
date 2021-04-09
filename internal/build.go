@@ -110,8 +110,9 @@ void (async () => {
 	}
 
 	return buildAndWatch{
-		Esbuild: buildOpts,
-		Watch:   opts.Watch,
+		Repository: repo,
+		Esbuild:    buildOpts,
+		Watch:      opts.Watch,
 		CreateProcess: func() process {
 			return &funcProcess{
 				start: func() error {
