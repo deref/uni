@@ -53,6 +53,14 @@ func (opts buildAndWatch) Run() error {
 	esbuildOpts.Plugins = plugins
 	esbuildOpts.Incremental = opts.Watch
 
+	if opts.Watch {
+		for _, entrypoint := range esbuildOpts.EntryPoints {
+			if err := watcher.Add(entrypoint); err != nil {
+				return fmt.Errorf("watching %q: %w", entrypoint, err)
+			}
+		}
+	}
+
 	result := api.Build(esbuildOpts)
 
 	g := new(errgroup.Group)
