@@ -14,6 +14,7 @@ import (
 type BuildOptions struct {
 	Package *Package
 	Version string
+	Watch   bool
 }
 
 func Build(repo *Repository, opts BuildOptions) error {
@@ -108,29 +109,50 @@ void (async () => {
 		}
 	}
 
-	result := api.Build(buildOpts)
+	return buildAndWatch{
+		Repository: repo,
+		Esbuild:    buildOpts,
+		Watch:      opts.Watch,
+		CreateProcess: func() process {
+			return &funcProcess{
+				start: func() error {
+					pkgMetadata := PackageMetadata{
+						Name:         pkg.Name,
+						Private:      !pkg.Public,
+						Description:  pkg.Description,
+						Version:      opts.Version,
+						Dependencies: dependencies,
+						Bin:          bin,
+					}
 
-	pkgMetadata := PackageMetadata{
-		Name:         pkg.Name,
-		Private:      !pkg.Public,
-		Description:  pkg.Description,
-		Version:      opts.Version,
-		Dependencies: dependencies,
-		Bin:          bin,
-	}
+					if pkg.Index != "" {
+						base := path.Base(pkg.Index)
+						pkgMetadata.Main = strings.TrimSuffix(base, path.Ext(pkg.Index)) + ".js"
+					}
 
-	if pkg.Index != "" {
-		base := path.Base(pkg.Index)
-		pkgMetadata.Main = strings.TrimSuffix(base, path.Ext(pkg.Index)) + ".js"
-	}
+					if err := WritePackageJSON(pkgMetadata, packageDir); err != nil {
+						return err
+					}
 
-	if err := WritePackageJSON(pkgMetadata, packageDir); err != nil {
-		return err
-	}
+					return nil
+				},
+			}
+		},
+	}.Run()
+}
 
-	if len(result.Errors) > 0 {
-		return fmt.Errorf("build error")
-	}
+type funcProcess struct {
+	start func() error
+}
 
+func (proc *funcProcess) Start() error {
+	return proc.start()
+}
+
+func (proc *funcProcess) Kill() error {
+	return nil
+}
+
+func (proc *funcProcess) Wait() error {
 	return nil
 }
