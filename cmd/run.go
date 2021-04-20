@@ -33,6 +33,9 @@ will be awaited.  If no status code is returned, the default is 0.
 After awaiting a return value, the process will be terminated immediately.  Any
 pending events will not be executed; main is responsible for graceful shutdown.
 
+Unhandled exceptions and promise rejections will be logged to stderr and the
+process will immediately exit with status code 1.
+
 Example:
 
 export const main = async (...args: string[]) => {

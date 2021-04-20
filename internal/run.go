@@ -53,6 +53,22 @@ func Run(repo *Repository, opts RunOptions) error {
 
 	// See also `shim` in Build.
 	script := fmt.Sprintf(`require('source-map-support').install();
+
+const { inspect } = require('util');
+process.on('uncaughtException', (exception) => {
+  process.stderr.write('uncaught exception: ' + inspect(exception) + '\n', () => {
+    process.exit(1);
+  });
+});
+process.on('unhandledRejection', (reason, promise) => {
+  process.stderr.write(
+    'unhandled rejection at: ' + inspect(promise) + '\nreason: ' + inspect(reason) + '\n',
+    () => {
+      process.exit(1);
+    },
+  );
+})
+
 const { main } = require('./bundle.js');
 if (typeof main === 'function') {
 	const args = process.argv.slice(2);

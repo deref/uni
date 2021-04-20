@@ -95,6 +95,22 @@ func Build(repo *Repository, opts BuildOptions) error {
 
 		// See also `script` in Run.
 		shim := fmt.Sprintf(`#!/usr/bin/env node
+
+const { inspect } = require('util');
+process.on('uncaughtException', (exception) => {
+  process.stderr.write('uncaught exception: ' + inspect(exception) + '\n', () => {
+    process.exit(1);
+  });
+});
+process.on('unhandledRejection', (reason, promise) => {
+  process.stderr.write(
+    'unhandled rejection at: ' + inspect(promise) + '\nreason: ' + inspect(reason) + '\n',
+    () => {
+      process.exit(1);
+    },
+  );
+})
+
 const { main } = require('./%s');
 const args = process.argv.slice(2);
 void (async () => {
