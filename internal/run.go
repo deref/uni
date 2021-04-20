@@ -61,7 +61,7 @@ if (typeof main === 'function') {
 		process.exit(exitCode ?? 0);
 	})();
 } else {
-	process.stdout.write('error: %s does not export a main function\n', () => {
+	process.stderr.write('error: %s does not export a main function\n', () => {
 		process.exit(1);
 	});
 }

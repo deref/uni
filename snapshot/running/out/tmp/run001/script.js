@@ -7,7 +7,7 @@ if (typeof main === 'function') {
 		process.exit(exitCode ?? 0);
 	})();
 } else {
-	process.stdout.write('error: /current/working/path/snapshot/running/exit.ts does not export a main function\n', () => {
+	process.stderr.write('error: /current/working/path/snapshot/running/exit.ts does not export a main function\n', () => {
 		process.exit(1);
 	});
 }
