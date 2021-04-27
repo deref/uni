@@ -5,6 +5,7 @@ package internal
 
 type Config struct {
 	Engines      map[string]string
+	Registry     string
 	Packages     map[string]PackageConfig
 	Dependencies map[string]string
 }

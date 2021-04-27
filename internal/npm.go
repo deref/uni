@@ -7,14 +7,19 @@ import (
 )
 
 type PackageMetadata struct {
-	Name         string            `json:"name,omitempty"`
-	Description  string            `json:"description,omitempty"`
-	Version      string            `json:"version,omitempty"`
-	Private      bool              `json:"private"`
-	Main         string            `json:"main,omitempty"`
-	Bin          map[string]string `json:"bin,omitempty"`
-	Dependencies map[string]string `json:"dependencies,omitempty"`
-	Scripts      map[string]string `json:"scripts,omitempty"`
+	Name          string            `json:"name,omitempty"`
+	Description   string            `json:"description,omitempty"`
+	Version       string            `json:"version,omitempty"`
+	Private       bool              `json:"private"`
+	Main          string            `json:"main,omitempty"`
+	Bin           map[string]string `json:"bin,omitempty"`
+	Dependencies  map[string]string `json:"dependencies,omitempty"`
+	Scripts       map[string]string `json:"scripts,omitempty"`
+	PublishConfig *PublishConfig    `json:"publishConfig,omitempty"`
+}
+
+type PublishConfig struct {
+	Registry string `json:"registry"`
 }
 
 func WritePackageJSON(metadata PackageMetadata, dir string) error {

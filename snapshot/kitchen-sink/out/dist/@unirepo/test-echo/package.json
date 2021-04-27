@@ -3,5 +3,8 @@
   "private": true,
   "bin": {
     "test-echo": "test-echo"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
   }
 }

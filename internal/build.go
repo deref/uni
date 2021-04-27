@@ -139,6 +139,9 @@ void (async () => {
 						Version:      opts.Version,
 						Dependencies: dependencies,
 						Bin:          bin,
+						PublishConfig: &PublishConfig{
+							Registry: repo.Registry,
+						},
 					}
 
 					if pkg.Index != "" {
