@@ -56,3 +56,7 @@ in to `./bin`. These executables would check engines before executing.
 
 It might also be desirable to create `node` and `npm` binstubs to alleviate the
 need for a node version manager.
+
+## .envrc
+
+Automatic management of envrc files, for something like https://direnv.net ?
