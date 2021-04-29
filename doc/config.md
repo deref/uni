@@ -7,8 +7,8 @@ For an example project, see the [`uni.yml` file](../example/uni.yml) in the
 
 # `repository`
 
-URL of code repository. If provided, this property is copied in to all
-generated `package.json` files.
+URL of the containing code repository. If provided, this property is copied
+into all generated `package.json` files.
 
 # `registry`
 
