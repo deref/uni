@@ -139,6 +139,7 @@ void (async () => {
 						Version:      opts.Version,
 						Dependencies: dependencies,
 						Bin:          bin,
+						Repository:   repo.Url,
 						PublishConfig: &PublishConfig{
 							Registry: repo.Registry,
 						},

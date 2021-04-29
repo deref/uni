@@ -18,6 +18,7 @@ type Repository struct {
 	Engines      map[string]string
 	Packages     map[string]*Package
 	Dependencies map[string]*Dependency
+	Url          string
 	Registry     string
 }
 
@@ -69,6 +70,7 @@ func LoadRepository(searchDir string) (*Repository, error) {
 		repo.Engines[engineName] = engineVersion
 	}
 
+	repo.Url = cfg.Repository
 	repo.Registry = cfg.Registry
 	if repo.Registry == "" {
 		repo.Registry = "https://registry.npmjs.org/"

@@ -15,6 +15,7 @@ func InstallDependencies(repo *Repository, opts InstallDependenciesOptions) erro
 		Private:      true,
 		Description:  "GENERATED FILE: DO NOT EDIT! This file is managed by unirepo.",
 		Dependencies: make(map[string]string),
+		Repository:   repo.Url,
 		Scripts: map[string]string{
 			"postinstall": "patch-package",
 		},

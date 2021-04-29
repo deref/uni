@@ -5,6 +5,11 @@ Configuration is specified in a `uni.yml` file at the project root.
 For an example project, see the [`uni.yml` file](../example/uni.yml) in the
 [example directory](../example).
 
+# `repository`
+
+URL of code repository. If provided, this property is copied in to all
+generated `package.json` files.
+
 # `registry`
 
 Where to publish packages to. Defaults to `https://registry.npmjs.org/`.

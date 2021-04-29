@@ -1,10 +1,11 @@
 {
   "name": "@unirepo/test-echo",
   "private": true,
+  "repository": "https://github.com/deref/uni",
   "bin": {
     "test-echo": "test-echo"
   },
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://example.com/registry"
   }
 }
