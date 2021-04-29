@@ -1,6 +1,6 @@
 {
   "name": "@unirepo/test-util",
-  "private": true,
+  "private": false,
   "repository": "https://github.com/deref/uni",
   "main": "util.js",
   "dependencies": {

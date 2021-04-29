@@ -40,6 +40,8 @@ type Executable struct {
 	Entrypoint string
 }
 
+const DefaultRegistry = "https://registry.npmjs.org/"
+
 func LoadRepository(searchDir string) (*Repository, error) {
 	f, err := openConfigFile(searchDir)
 	if err != nil {
@@ -73,7 +75,7 @@ func LoadRepository(searchDir string) (*Repository, error) {
 	repo.Url = cfg.Repository
 	repo.Registry = cfg.Registry
 	if repo.Registry == "" {
-		repo.Registry = "https://registry.npmjs.org/"
+		repo.Registry = DefaultRegistry
 	}
 
 	repo.Packages = make(map[string]*Package)

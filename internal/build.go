@@ -125,6 +125,9 @@ void (async () => {
 		}
 	}
 
+	isScoped := strings.HasPrefix(pkg.Name, "@")
+	private := !(pkg.Public || isScoped)
+
 	return buildAndWatch{
 		Repository: repo,
 		Esbuild:    buildOpts,
@@ -134,7 +137,7 @@ void (async () => {
 				start: func() error {
 					pkgMetadata := PackageMetadata{
 						Name:         pkg.Name,
-						Private:      !pkg.Public,
+						Private:      private,
 						Description:  pkg.Description,
 						Version:      opts.Version,
 						Dependencies: dependencies,
