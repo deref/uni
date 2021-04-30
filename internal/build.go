@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"context"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -17,7 +18,7 @@ type BuildOptions struct {
 	Watch   bool
 }
 
-func Build(repo *Repository, opts BuildOptions) error {
+func Build(ctx context.Context, repo *Repository, opts BuildOptions) error {
 	pkg := opts.Package
 
 	packageDir := path.Join(repo.OutDir, "dist", pkg.Name)
@@ -161,7 +162,7 @@ void (async () => {
 				},
 			}
 		},
-	}.Run()
+	}.Run(ctx)
 }
 
 type funcProcess struct {

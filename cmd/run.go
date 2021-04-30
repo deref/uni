@@ -1,11 +1,14 @@
 package cmd
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"os"
 	"os/exec"
+	"os/signal"
 	"path/filepath"
+	"syscall"
 
 	"github.com/deref/uni/internal"
 	"github.com/spf13/cobra"
@@ -61,7 +64,16 @@ export const main = async (...args: string[]) => {
 
 		runOpts.Args = args[1:]
 
-		err = internal.Run(repo, runOpts)
+		ctx, cancel := context.WithCancel(cmd.Context())
+		shutdown := make(chan os.Signal, 1)
+		signal.Notify(shutdown, syscall.SIGINT)
+		go func() {
+			_ = <-shutdown
+			fmt.Fprintf(os.Stderr, "Received shutdown signal. Waiting for process to finish.\n")
+			cancel()
+		}()
+
+		err = internal.Run(ctx, repo, runOpts)
 		var exitErr *exec.ExitError
 		if errors.As(err, &exitErr) {
 			os.Exit(exitErr.ExitCode())

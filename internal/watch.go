@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os"
@@ -25,7 +26,7 @@ type process interface {
 	Stop() error
 }
 
-func (opts buildAndWatch) Run() error {
+func (opts buildAndWatch) Run(ctx context.Context) error {
 	repo := opts.Repository
 
 	plugins := append([]api.Plugin{}, opts.Esbuild.Plugins...)
@@ -104,7 +105,6 @@ func (opts buildAndWatch) Run() error {
 				} else {
 					go func() {
 						done <- proc.Wait()
-						fmt.Println("Done waiting")
 					}()
 				}
 			}
@@ -162,9 +162,17 @@ func (opts buildAndWatch) Run() error {
 						close(abort)
 						return err
 					}
+				case <-ctx.Done():
+					close(abort)
+					return nil
 				}
 			}
 		})
+	} else {
+		go func() {
+			<-ctx.Done()
+			close(abort)
+		}()
 	}
 
 	return g.Wait()

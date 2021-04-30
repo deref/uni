@@ -18,6 +18,7 @@
 package internal
 
 import (
+	"context"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -40,7 +41,7 @@ type RunOptions struct {
 }
 
 // Status code may be returned within an exec.ExitError return value.
-func Run(repo *Repository, opts RunOptions) error {
+func Run(ctx context.Context, repo *Repository, opts RunOptions) error {
 	if err := EnsureTmp(repo); err != nil {
 		return err
 	}
@@ -124,7 +125,7 @@ if (typeof main === 'function') {
 
 			return &cmdProcess{cmd: node}
 		},
-	}.Run()
+	}.Run(ctx)
 }
 
 type cmdProcess struct {

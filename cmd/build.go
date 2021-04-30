@@ -47,7 +47,7 @@ Given no arguments, builds all packages. Otherwise, builds only the specified pa
 		// TODO: Parallelism.
 		for _, pkg := range packages {
 			buildOpts.Package = pkg
-			if err := internal.Build(repo, buildOpts); err != nil {
+			if err := internal.Build(cmd.Context(), repo, buildOpts); err != nil {
 				return err
 			}
 		}
