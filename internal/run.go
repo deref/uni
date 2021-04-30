@@ -23,9 +23,14 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"runtime"
+	"syscall"
+	"time"
 
 	"github.com/evanw/esbuild/pkg/api"
 )
+
+var maxProcStopWait = 5 * time.Second
 
 type RunOptions struct {
 	Watch      bool
@@ -34,10 +39,7 @@ type RunOptions struct {
 	BuildOnly  bool
 }
 
-// TODO: Need to handle interrupts in order to have a higher chance
-// of cleaning up temporary files.
-
-// Status code may be returend within an exec.ExitError return value.
+// Status code may be returned within an exec.ExitError return value.
 func Run(repo *Repository, opts RunOptions) error {
 	if err := EnsureTmp(repo); err != nil {
 		return err
@@ -118,6 +120,7 @@ if (typeof main === 'function') {
 			node.Stdin = os.Stdin
 			node.Stdout = os.Stdout
 			node.Stderr = os.Stderr
+			node.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
 
 			return &cmdProcess{cmd: node}
 		},
@@ -132,11 +135,22 @@ func (proc *cmdProcess) Start() error {
 	return proc.cmd.Start()
 }
 
-func (proc *cmdProcess) Kill() error {
+func (proc *cmdProcess) Stop() error {
 	if proc.cmd.Process == nil {
 		return nil
 	}
-	return proc.cmd.Process.Kill()
+
+	if runtime.GOOS == "windows" {
+		return proc.cmd.Process.Kill()
+	}
+
+	go func() {
+		// TODO: Make the wait time configurable.
+		time.Sleep(maxProcStopWait)
+		_ = syscall.Kill(-proc.cmd.Process.Pid, syscall.SIGKILL)
+	}()
+
+	return syscall.Kill(-proc.cmd.Process.Pid, syscall.SIGTERM)
 }
 
 func (proc *cmdProcess) Wait() error {

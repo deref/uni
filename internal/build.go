@@ -172,7 +172,7 @@ func (proc *funcProcess) Start() error {
 	return proc.start()
 }
 
-func (proc *funcProcess) Kill() error {
+func (proc *funcProcess) Stop() error {
 	return nil
 }
 
