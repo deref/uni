@@ -19,12 +19,12 @@ Unirepo is _fast_ because it is ships as a native binary and builds your code
 using [esbuild][1].
 
 Additionally, Unirepo has a `run` subcommand that acts as a substitute for
-[`ts-node`][2]. The `run` subcomain also supports a `--watch` flag, and so acts
-as a substitute for [`node-dev`][3] (or [`ts-node-dev`][4]) as well. Sourcemaps
-are always enabled.
+[`ts-node`][2]. The `run` subcommand also supports a `--watch` flag, and so
+acts as a substitute for [`node-dev`][3] (or [`ts-node-dev`][4]) as well.
+Sourcemaps are always enabled.
 
-As mentioned, Unirepo is extremely opinionated. Those opinions will evolve in
-to documentation, including a a growing list of
+As mentioned, Unirepo is extremely opinionated. Those opinions will evolve into
+documentation, including a growing list of
 [anti-features](./doc/anti-features.md).
 
 Want to see it in action?
