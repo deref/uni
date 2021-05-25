@@ -23,4 +23,4 @@ to load a (trusted) module.
 
 Note that run processes will terminate as soon as the main function returns.
 This differs from Node's default behavior where a non-empty event loop will
-keep the program alive indefinitely
+keep the program alive indefinitely.

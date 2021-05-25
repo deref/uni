@@ -35,7 +35,7 @@ Map of executables to be included in the package.
 included in the built package.
 
 `entrypoint` is the path to an entrypoint module which is suitable for use
-with `uni run` (ie. it must export a `main` function).
+with `uni run` (i.e. it must export a `main` function).
 
 ### `packages.<package-name>.public`
 
@@ -50,7 +50,8 @@ A short description to accompany the package name when published to a registry.
 
 # `engines`
 
-Specifies required external programs versions. If provided, these are checked before running any operations that are sensitive to these programs.
+Specifies required external programs versions. If provided, these are checked
+before running any operations that are sensitive to these programs.
 
 NOTE: These engines are not copied to any generated package.json files yet.
 
