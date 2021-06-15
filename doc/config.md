@@ -5,14 +5,21 @@ Configuration is specified in a `uni.yml` file at the project root.
 For an example project, see the [`uni.yml` file](../example/uni.yml) in the
 [example directory](../example).
 
+**UNSTABLE**: Packaging and dependency configuration will be separated.
+
 # `repository`
 
 URL of the containing code repository. If provided, this property is copied
 into all generated `package.json` files.
 
+**UNSTABLE**: Publishing will be separated from package definition.
+
 # `registry`
 
 Where to publish packages to. Defaults to `https://registry.npmjs.org/`.
+
+**UNSTABLE**: Publishing
+configuration of dependencies and deployment.
 
 # `packages`
 
@@ -43,6 +50,8 @@ _Default:_ `false`
 
 Setting to true will allow packages to be published to a public registry for
 anyone to download.
+
+**UNSTABLE**: Publishing will be separated from package definition.
 
 ### `packages.<package-name>.description`
 
