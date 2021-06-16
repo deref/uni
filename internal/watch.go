@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os"
@@ -22,10 +23,10 @@ type buildAndWatch struct {
 type process interface {
 	Start() error
 	Wait() error
-	Kill() error
+	Stop() error
 }
 
-func (opts buildAndWatch) Run() error {
+func (opts buildAndWatch) Run(ctx context.Context) error {
 	repo := opts.Repository
 
 	plugins := append([]api.Plugin{}, opts.Esbuild.Plugins...)
@@ -86,6 +87,11 @@ func (opts buildAndWatch) Run() error {
 		for {
 			proc := opts.CreateProcess()
 			done := make(chan error, 1)
+			waitDone := func() {
+				if err := <-done; err != nil {
+					fmt.Fprintf(os.Stderr, "could not wait for process to finish: %v\n", err)
+				}
+			}
 
 			buildOK := len(result.Errors) == 0
 			shouldStart := buildOK && !waitForChange
@@ -104,8 +110,10 @@ func (opts buildAndWatch) Run() error {
 			}
 			select {
 			case <-abort:
-				if err := proc.Kill(); err != nil {
-					fmt.Fprintf(os.Stderr, "could not kill: %v\n", err)
+				if err := proc.Stop(); err != nil {
+					fmt.Fprintf(os.Stderr, "could not stop: %v\n", err)
+				} else {
+					waitDone()
 				}
 				return nil
 			case <-restart:
@@ -119,8 +127,10 @@ func (opts buildAndWatch) Run() error {
 						break loop
 					}
 				}
-				if err := proc.Kill(); err != nil {
-					fmt.Fprintf(os.Stderr, "could not kill: %v\n", err)
+				if err := proc.Stop(); err != nil {
+					fmt.Fprintf(os.Stderr, "could not stop: %v\n", err)
+				} else {
+					waitDone()
 				}
 				result = result.Rebuild()
 				waitForChange = false
@@ -152,9 +162,17 @@ func (opts buildAndWatch) Run() error {
 						close(abort)
 						return err
 					}
+				case <-ctx.Done():
+					close(abort)
+					return nil
 				}
 			}
 		})
+	} else {
+		go func() {
+			<-ctx.Done()
+			close(abort)
+		}()
 	}
 
 	return g.Wait()
