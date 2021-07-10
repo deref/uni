@@ -1,9 +1,12 @@
 package internal
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"os"
+	"os/exec"
+	"path"
 	"path/filepath"
 	"time"
 
@@ -14,7 +17,9 @@ import (
 
 type buildAndWatch struct {
 	Repository    *Repository
+	Package       *Package
 	Esbuild       api.BuildOptions // XXX smaller option set.
+	Types         bool
 	Watch         bool
 	CreateProcess func() process
 }
@@ -26,6 +31,10 @@ type process interface {
 }
 
 func (opts buildAndWatch) Run() error {
+	if opts.Watch && opts.Types {
+		return errors.New("cannot build types with watch")
+	}
+
 	repo := opts.Repository
 
 	plugins := append([]api.Plugin{}, opts.Esbuild.Plugins...)
@@ -69,6 +78,29 @@ func (opts buildAndWatch) Run() error {
 	}
 
 	result := api.Build(esbuildOpts)
+
+	if opts.Types && opts.Package.Index != "" {
+		args := []string{
+			"--silent",
+			"--no-banner",
+		}
+		for _, external := range esbuildOpts.External {
+			args = append(args, "--external-imports="+external)
+		}
+		args = append(args,
+			"--out-file", path.Join(repo.OutDir, "dist", opts.Package.Name, "index.d.ts"),
+			opts.Package.Index,
+		)
+		cmd := exec.Command(
+			path.Join(repo.RootDir, "node_modules", ".bin", "dts-bundle-generator"),
+			args...,
+		)
+		cmd.Stdout = os.Stderr // Intentional redirect.
+		cmd.Stderr = os.Stderr
+		if err := cmd.Run(); err != nil {
+			return fmt.Errorf("bundling type declarations: %w", err)
+		}
+	}
 
 	g := new(errgroup.Group)
 

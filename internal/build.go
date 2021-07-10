@@ -14,6 +14,7 @@ import (
 type BuildOptions struct {
 	Package *Package
 	Version string
+	Types   bool
 	Watch   bool
 }
 
@@ -131,7 +132,9 @@ void (async () => {
 	return buildAndWatch{
 		Repository: repo,
 		Esbuild:    buildOpts,
+		Types:      opts.Types,
 		Watch:      opts.Watch,
+		Package:    pkg,
 		CreateProcess: func() process {
 			return &funcProcess{
 				start: func() error {

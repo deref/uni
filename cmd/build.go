@@ -13,6 +13,7 @@ func init() {
 	rootCmd.AddCommand(buildCmd)
 	buildCmd.Flags().StringVar(&buildOpts.Version, "version", "", "version to put in package.json")
 	buildCmd.Flags().BoolVar(&buildOpts.Watch, "watch", false, "rebuilds each time source files change")
+	buildCmd.Flags().BoolVar(&buildOpts.Types, "types", false, "also build a .d.ts file")
 }
 
 var buildCmd = &cobra.Command{

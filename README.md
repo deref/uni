@@ -65,7 +65,7 @@ go get -u github.com/deref/uni
 
 Here's the steps to do in your CI flow:
 
-1. `uni build --version $VERSION` to create packages with version numbers.
+1. `uni build --version $VERSION --types` to create packages with version numbers and types definitions.
 2. `uni pack` to create packed `.tgz` files.
 3. `uni publish` to automate `npm publish ./path/to/package.tgz`.
 
