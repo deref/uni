@@ -4,7 +4,7 @@
 
 patch-package 6.2.2
 Applying patches...
-audited 185 packages in SOME_AMOUNT_OF_TIME
+added 184 packages from 120 contributors and audited 185 packages in 5.185s
 
 SOME_NUMBER_OF packages are looking for funding
   run `npm fund` for details
