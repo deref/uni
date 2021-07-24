@@ -7,8 +7,8 @@ import (
 	"os/exec"
 	"path/filepath"
 
-	"github.com/deref/uni/internal"
 	"github.com/spf13/cobra"
+	"github.com/teintinu/monoclean/internal"
 )
 
 var runOpts = internal.RunOptions{}
@@ -39,7 +39,7 @@ process will immediately exit with status code 1.
 Example:
 
 export const main = async (...args: string[]) => {
-  console.log("see uni run");
+  console.log("see monoclean run");
   return 0; // Return an exit code (optional).
 }
 `,

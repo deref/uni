@@ -4,14 +4,14 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/deref/uni/internal"
 	"github.com/spf13/cobra"
+	"github.com/teintinu/monoclean/internal"
 )
 
-const rootDescription = "Unirepo is a tool for managing uniform TypeScript monorepos."
+const rootDescription = "monoclean is a tool for managing uniform TypeScript monorepos."
 
 var rootCmd = &cobra.Command{
-	Use:          "uni",
+	Use:          "monoclean",
 	Short:        rootDescription,
 	Long:         rootDescription,
 	SilenceUsage: true,

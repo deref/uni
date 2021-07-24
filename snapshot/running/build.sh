@@ -2,18 +2,18 @@
 
 set -euo pipefail
 
-uni deps
-uni clean
+monoclean deps
+monoclean clean
 
 (
   set +e
 
-  uni run ./exit.ts 0
+  monoclean run ./exit.ts 0
   echo "exit code expected=0 actual=$?"
 
-  uni run ./exit.ts 5
+  monoclean run ./exit.ts 5
   echo "exit code expected=5 actual=$?"
 )
 
-tmppath=$(uni run --build-only ./exit.ts 5)
+tmppath=$(monoclean run --build-only ./exit.ts 5)
 mv "$tmppath" ./out/tmp/run001

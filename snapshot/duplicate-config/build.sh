@@ -4,6 +4,6 @@ set -euo pipefail
 
 (
   set +e
-  uni env
+  monoclean env
   echo "exit code expected=1 actual=$?"
 )

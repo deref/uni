@@ -176,7 +176,7 @@ func LoadRepository(searchDir string) (*Repository, error) {
 	return &repo, nil
 }
 
-const configName = "uni.yml"
+const configName = "monoclean.yml"
 
 var ErrNoConfig = fmt.Errorf("cannot find %s config file", configName)
 

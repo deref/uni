@@ -2,17 +2,17 @@ engines:
   node: "v14.17.3"
   npm: "6.14.13"
 
-repository: https://github.com/deref/uni
+repository: https://github.com/teintinu/monoclean
 registry: https://example.com/registry
 
 packages:
   # Package with only an executable.
-  "@unirepo/test-echo":
+  "@monoclean/test-echo":
     executables:
       test-echo: echo.ts
 
   # Package with only exports.
-  "@unirepo/test-util":
+  "@monoclean/test-util":
     index: util.ts
 
 dependencies:

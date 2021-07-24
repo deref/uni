@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../../echo.ts"],
-  "sourcesContent": ["export const main = async (...args: string[]) => {\n  console.log(...args);\n  return 0;\n};\n"],
-  "mappings": ";;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAO,IAAM,OAAO,UAAU;AAC5B,UAAQ,IAAI,GAAG;AACf,SAAO;AAAA;",
-  "names": []
-}

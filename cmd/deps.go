@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"github.com/deref/uni/internal"
 	"github.com/spf13/cobra"
+	"github.com/teintinu/monoclean/internal"
 )
 
 var depsOpts internal.InstallDependenciesOptions

@@ -2,6 +2,6 @@
 
 set -euo pipefail
 
-uni deps
-uni clean
-uni build
+monoclean deps
+monoclean clean
+monoclean build

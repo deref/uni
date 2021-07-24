@@ -16,8 +16,8 @@ func init() {
 
 var versionCmd = &cobra.Command{
 	Use:   "version",
-	Short: "Print the version of Unirepo.",
-	Long:  "Print the version of Unirepo.",
+	Short: "Print the version of monoclean.",
+	Long:  "Print the version of monoclean.",
 	Run: func(cmd *cobra.Command, args []string) {
 		buildInfo, ok := debug.ReadBuildInfo()
 		if !ok {

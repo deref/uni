@@ -1,4 +1,4 @@
-module github.com/deref/uni
+module github.com/teintinu/monoclean
 
 go 1.15
 

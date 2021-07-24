@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../exit.ts"],
-  "sourcesContent": ["export const main = async (exitCode: string) => {\n  return Number.parseInt(exitCode, 10);\n};\n"],
-  "mappings": ";;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAO,IAAM,OAAO,OAAO;AACzB,SAAO,OAAO,SAAS,UAAU;AAAA;",
-  "names": []
-}

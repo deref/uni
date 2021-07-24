@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/deref/uni/cmd"
+	"github.com/teintinu/monoclean/cmd"
 )
 
 func main() {

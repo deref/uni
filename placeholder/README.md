@@ -1,5 +1,5 @@
-# @unirepo/placeholder
+# @monoclean/placeholder
 
 This is an empty placeholder project. It's reserved for use in generated output.
 
-For more information, see [Unirepo](https://github.com/deref/uni).
+For more information, see [monoclean](https://github.com/teintinu/monoclean).

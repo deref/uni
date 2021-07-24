@@ -42,7 +42,7 @@ func Build(repo *Repository, opts BuildOptions) error {
 	}
 
 	depsPlugin := api.Plugin{
-		Name: "unirepo:deps",
+		Name: "monoclean:deps",
 		Setup: func(build api.PluginBuild) {
 			build.OnResolve(api.OnResolveOptions{
 				Filter: ".*",

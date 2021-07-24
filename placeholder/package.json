@@ -1,12 +1,12 @@
 {
-  "name": "@unirepo/placeholder",
+  "name": "@monoclean/placeholder",
   "version": "1.0.0",
   "private": false,
   "description": "An empty package to reserve this package name.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deref/uni.git"
+    "url": "git+https://github.com/teintinu/monoclean.git"
   },
   "license": "MIT",
-  "homepage": "https://github.com/deref/uni#readme"
+  "homepage": "https://github.com/teintinu/monoclean#readme"
 }

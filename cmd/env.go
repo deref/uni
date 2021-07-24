@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/deref/uni/internal"
 	"github.com/spf13/cobra"
+	"github.com/teintinu/monoclean/internal"
 )
 
 func init() {

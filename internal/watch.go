@@ -49,7 +49,7 @@ func (opts buildAndWatch) Run() error {
 		defer watcher.Close()
 
 		watchPlugin := api.Plugin{
-			Name: "unirepo:watch",
+			Name: "monoclean:watch",
 			Setup: func(build api.PluginBuild) {
 				build.OnLoad(api.OnLoadOptions{
 					Filter: ".*",

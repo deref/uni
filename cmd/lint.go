@@ -5,8 +5,8 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/deref/uni/internal"
 	"github.com/spf13/cobra"
+	"github.com/teintinu/monoclean/internal"
 )
 
 var lintOpts = internal.LintOptions{}

@@ -3,8 +3,8 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/deref/uni/internal"
 	"github.com/spf13/cobra"
+	"github.com/teintinu/monoclean/internal"
 )
 
 var buildOpts internal.BuildOptions

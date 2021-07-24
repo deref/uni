@@ -29,7 +29,7 @@ Trace:
 npm manifest: 
   {
     "name": "simple-workspace",
-    "description": "GENERATED FILE: DO NOT EDIT! This file is managed by unirepo.",
+    "description": "GENERATED FILE: DO NOT EDIT! This file is managed by monoclean.",
     "version": "1.0.0",
     "private": true,
     "dependencies": {

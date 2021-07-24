@@ -35,14 +35,14 @@ func ConfigureRepository(repo *Repository) error {
 			return err
 		}
 	} else {
-		workspaceName = "@unirepo/placeholder"
+		workspaceName = "@monoclean/placeholder"
 		workspaceVersion = "0.0.1"
 	}
 	metadata := PackageMetadata{
 		Name:         workspaceName,
 		Version:      workspaceVersion,
 		Private:      true,
-		Description:  "GENERATED FILE: DO NOT EDIT! This file is managed by unirepo.",
+		Description:  "GENERATED FILE: DO NOT EDIT! This file is managed by monoclean.",
 		Dependencies: make(map[string]string),
 		Repository:   repo.Url,
 	}
@@ -63,7 +63,7 @@ func ConfigureRepository(repo *Repository) error {
 func configureGitIgnore(repo *Repository) error {
 
 	gitignore := path.Join(repo.RootDir, ".gitignore")
-	var content = `# unirepo
+	var content = `# monoclean
 node_modules
 package.json
 package-lock.json
@@ -154,7 +154,7 @@ func configurePkg(repo *Repository, pkg *Package) error {
 	metadata := PackageMetadata{
 		Name:         pkg.Name,
 		Version:      packageVersion,
-		Description:  "GENERATED FILE: DO NOT EDIT! This file is managed by unirepo.",
+		Description:  "GENERATED FILE: DO NOT EDIT! This file is managed by monoclean.",
 		Dependencies: make(map[string]string),
 		Repository:   repo.Url,
 		Scripts: map[string]string{
